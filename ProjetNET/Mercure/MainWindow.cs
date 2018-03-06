@@ -16,6 +16,8 @@ namespace ProjetNET
         public MainWindow()
         {
             InitializeComponent();
+            Integration MyIntegration = new Integration();
+            MyIntegration.Show();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -26,6 +28,10 @@ namespace ProjetNET
 
         private void SelectionXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            Integration MyIntegration = new Integration();
+            MyIntegration.Show();
+
             OpenFileDialog MyFileDialog = new OpenFileDialog();
             MyFileDialog.Filter = "XML Files|*.xml";
             DialogResult HasClickedOK = MyFileDialog.ShowDialog();
