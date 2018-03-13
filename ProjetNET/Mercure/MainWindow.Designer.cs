@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
-            this.ToolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.ToolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.MyMainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,18 +41,12 @@
             // MainStatusStrip
             // 
             this.MainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripProgressBar1,
             this.ToolStripStatusLabel1});
             this.MainStatusStrip.Location = new System.Drawing.Point(0, 240);
             this.MainStatusStrip.Name = "MainStatusStrip";
             this.MainStatusStrip.Size = new System.Drawing.Size(284, 22);
             this.MainStatusStrip.TabIndex = 0;
             this.MainStatusStrip.Text = "statusStrip1";
-            // 
-            // ToolStripProgressBar1
-            // 
-            this.ToolStripProgressBar1.Name = "ToolStripProgressBar1";
-            this.ToolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
             // ToolStripStatusLabel1
             // 
@@ -119,7 +112,6 @@
         private System.Windows.Forms.ToolStripMenuItem FileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SelectionXMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem IntegrationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripProgressBar ToolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel ToolStripStatusLabel1;
     }
 }

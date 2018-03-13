@@ -12,12 +12,13 @@ namespace ProjetNET
     public partial class MainWindow : Form
     {
         private String XMLFilePath;
+        private DBConnect DB;
 
         public MainWindow()
         {
+            this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
-            Integration MyIntegration = new Integration();
-            MyIntegration.Show();
+            DBConnect.GetInstance().LoadXml(Parser.ParseXML("C:\\Users\\Administrateur\\Desktop\\DI4---.NET\\DI4 Plateformes logicielles Net - Sujet TP\\DI4 Plateformes logicielles Net - Sujet TP\\Mercure.xml"));
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -28,9 +29,6 @@ namespace ProjetNET
 
         private void SelectionXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            Integration MyIntegration = new Integration();
-            MyIntegration.Show();
 
             OpenFileDialog MyFileDialog = new OpenFileDialog();
             MyFileDialog.Filter = "XML Files|*.xml";
@@ -46,17 +44,17 @@ namespace ProjetNET
         {
             if (XMLFilePath != null)
             {
-                ToolStripProgressBar1.Value = 0;
-                while (ToolStripProgressBar1.Value < 100)
-                {
-                    ToolStripProgressBar1.Value++;
-                    System.Threading.Thread.Sleep(10);
-                }
+               
             }
             else
             {
                 ToolStripStatusLabel1.Text = "Please select a file bro/biatch!";
             }
+        }
+
+        private void MainWindow_FormClosing(object sender, EventArgs e)
+        {
+            DB.Close();
         }
     }
 }
