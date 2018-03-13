@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace ProjetNET
 {
@@ -18,7 +19,11 @@ namespace ProjetNET
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
-            DBConnect.GetInstance().LoadXml(Parser.ParseXML("C:\\Users\\Administrateur\\Desktop\\DI4---.NET\\DI4 Plateformes logicielles Net - Sujet TP\\DI4 Plateformes logicielles Net - Sujet TP\\Mercure.xml"));
+            XmlDocument XmlDocument = Parser.ParseXML("C:\\Users\\Administrateur\\Desktop\\DI4---.NET\\DI4 Plateformes logicielles Net - Sujet TP\\DI4 Plateformes logicielles Net - Sujet TP\\Mercure.xml");
+            XmlNodeList NodeList = XmlDocument.SelectNodes("/materiels/article");
+            foreach(XmlNode Node in NodeList){
+                DBConnect.GetInstance().AddArticle(Node);
+            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
