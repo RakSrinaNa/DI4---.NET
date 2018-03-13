@@ -19,11 +19,6 @@ namespace ProjetNET
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
-            XmlDocument XmlDocument = Parser.ParseXML("C:\\Users\\Administrateur\\Desktop\\DI4---.NET\\DI4 Plateformes logicielles Net - Sujet TP\\DI4 Plateformes logicielles Net - Sujet TP\\Mercure.xml");
-            XmlNodeList NodeList = XmlDocument.SelectNodes("/materiels/article");
-            foreach(XmlNode Node in NodeList){
-                DBConnect.GetInstance().AddArticle(Node);
-            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -34,15 +29,8 @@ namespace ProjetNET
 
         private void SelectionXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            OpenFileDialog MyFileDialog = new OpenFileDialog();
-            MyFileDialog.Filter = "XML Files|*.xml";
-            DialogResult HasClickedOK = MyFileDialog.ShowDialog();
-            if (HasClickedOK == DialogResult.OK)
-            {
-                XMLFilePath = MyFileDialog.FileName;
-                ToolStripStatusLabel1.Text = "";
-            }
+            Integration MyIntegration = new Integration();
+            MyIntegration.ShowDialog();
         }
 
         private void IntegrationToolStripMenuItem_Click(object sender, EventArgs e)

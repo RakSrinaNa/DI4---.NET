@@ -28,85 +28,99 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.TableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ProgressBar1 = new System.Windows.Forms.ProgressBar();
+            this.TableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.BrowseButton = new System.Windows.Forms.Button();
+            this.TextBox1 = new System.Windows.Forms.TextBox();
+            this.TableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.UpdateButton = new System.Windows.Forms.Button();
             this.NewButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
+            this.TableLayoutPanel1.SuspendLayout();
+            this.TableLayoutPanel2.SuspendLayout();
+            this.TableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // TableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.progressBar1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(820, 409);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.TableLayoutPanel1.ColumnCount = 1;
+            this.TableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel1.Controls.Add(this.ProgressBar1, 0, 2);
+            this.TableLayoutPanel1.Controls.Add(this.TableLayoutPanel2, 0, 0);
+            this.TableLayoutPanel1.Controls.Add(this.TableLayoutPanel3, 0, 1);
+            this.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.TableLayoutPanel1.Name = "TableLayoutPanel1";
+            this.TableLayoutPanel1.RowCount = 3;
+            this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.TableLayoutPanel1.Size = new System.Drawing.Size(305, 88);
+            this.TableLayoutPanel1.TabIndex = 0;
             // 
-            // progressBar1
+            // ProgressBar1
             // 
-            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.progressBar1.Location = new System.Drawing.Point(3, 391);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(814, 15);
-            this.progressBar1.TabIndex = 0;
+            this.ProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProgressBar1.Location = new System.Drawing.Point(3, 71);
+            this.ProgressBar1.Name = "ProgressBar1";
+            this.ProgressBar1.Size = new System.Drawing.Size(299, 14);
+            this.ProgressBar1.TabIndex = 0;
             // 
-            // tableLayoutPanel2
+            // TableLayoutPanel2
             // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.TableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.Controls.Add(this.BrowseButton, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.textBox1, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(814, 188);
-            this.tableLayoutPanel2.TabIndex = 1;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.UpdateButton, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.NewButton, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 197);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(814, 188);
-            this.tableLayoutPanel3.TabIndex = 2;
+            this.TableLayoutPanel2.AutoSize = true;
+            this.TableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.TableLayoutPanel2.ColumnCount = 2;
+            this.TableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75F));
+            this.TableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.TableLayoutPanel2.Controls.Add(this.BrowseButton, 1, 0);
+            this.TableLayoutPanel2.Controls.Add(this.TextBox1, 0, 0);
+            this.TableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.TableLayoutPanel2.Name = "TableLayoutPanel2";
+            this.TableLayoutPanel2.RowCount = 1;
+            this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.TableLayoutPanel2.Size = new System.Drawing.Size(299, 28);
+            this.TableLayoutPanel2.TabIndex = 1;
             // 
             // BrowseButton
             // 
             this.BrowseButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BrowseButton.Location = new System.Drawing.Point(634, 85);
+            this.BrowseButton.Location = new System.Drawing.Point(227, 3);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(75, 23);
+            this.BrowseButton.Size = new System.Drawing.Size(69, 22);
             this.BrowseButton.TabIndex = 0;
             this.BrowseButton.Text = "Browse";
             this.BrowseButton.UseVisualStyleBackColor = true;
+            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
+            // 
+            // TextBox1
+            // 
+            this.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TextBox1.Location = new System.Drawing.Point(3, 3);
+            this.TextBox1.Name = "TextBox1";
+            this.TextBox1.Size = new System.Drawing.Size(218, 20);
+            this.TextBox1.TabIndex = 1;
+            this.TextBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            // 
+            // TableLayoutPanel3
+            // 
+            this.TableLayoutPanel3.AutoSize = true;
+            this.TableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.TableLayoutPanel3.ColumnCount = 2;
+            this.TableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayoutPanel3.Controls.Add(this.UpdateButton, 0, 0);
+            this.TableLayoutPanel3.Controls.Add(this.NewButton, 1, 0);
+            this.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TableLayoutPanel3.Location = new System.Drawing.Point(3, 37);
+            this.TableLayoutPanel3.Name = "TableLayoutPanel3";
+            this.TableLayoutPanel3.RowCount = 1;
+            this.TableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.TableLayoutPanel3.Size = new System.Drawing.Size(299, 28);
+            this.TableLayoutPanel3.TabIndex = 2;
             // 
             // UpdateButton
             // 
@@ -115,56 +129,49 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UpdateButton.Location = new System.Drawing.Point(3, 3);
             this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(401, 182);
+            this.UpdateButton.Size = new System.Drawing.Size(143, 22);
             this.UpdateButton.TabIndex = 1;
             this.UpdateButton.Text = "Update";
             this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             // 
             // NewButton
             // 
             this.NewButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NewButton.Location = new System.Drawing.Point(410, 3);
+            this.NewButton.Location = new System.Drawing.Point(152, 3);
             this.NewButton.Name = "NewButton";
-            this.NewButton.Size = new System.Drawing.Size(401, 182);
+            this.NewButton.Size = new System.Drawing.Size(144, 22);
             this.NewButton.TabIndex = 2;
             this.NewButton.Text = "New";
             this.NewButton.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(146, 90);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 1;
+            this.NewButton.Click += new System.EventHandler(this.NewButton_Click);
             // 
             // Integration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 409);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.ClientSize = new System.Drawing.Size(305, 88);
+            this.Controls.Add(this.TableLayoutPanel1);
             this.Name = "Integration";
             this.Text = "Integration";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel3.ResumeLayout(false);
+            this.TableLayoutPanel1.ResumeLayout(false);
+            this.TableLayoutPanel1.PerformLayout();
+            this.TableLayoutPanel2.ResumeLayout(false);
+            this.TableLayoutPanel2.PerformLayout();
+            this.TableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel TableLayoutPanel1;
+        private System.Windows.Forms.ProgressBar ProgressBar1;
+        private System.Windows.Forms.TableLayoutPanel TableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel TableLayoutPanel3;
         private System.Windows.Forms.Button BrowseButton;
         private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.Button NewButton;
-        private System.Windows.Forms.TextBox textBox1;
-
-
-
+        private System.Windows.Forms.TextBox TextBox1;
     }
 }
