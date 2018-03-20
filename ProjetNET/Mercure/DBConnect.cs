@@ -69,7 +69,7 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read())
+                if (Result.Read() && !Result.IsClosed && Result.HasRows)
                 {
                     return (Int64)Result.GetValue(0);
                 }
@@ -85,7 +85,7 @@ namespace ProjetNET
             SQLiteDataReader ResultID = CommandID.ExecuteReader();
             if (ResultID != null)
             {
-                if (ResultID.Read())
+                if (ResultID.Read() && !Result.IsClosed && Result.HasRows)
                 {
                     ID = (Int64)ResultID.GetValue(0);
                 }
@@ -114,7 +114,7 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read())
+                if (Result.Read() && !Result.IsClosed && Result.HasRows)
                 {
                     return (Int64)Result.GetValue(0);
                 }
@@ -130,7 +130,7 @@ namespace ProjetNET
             SQLiteDataReader ResultID = CommandID.ExecuteReader();
             if (ResultID != null)
             {
-                if (ResultID.Read())
+                if (ResultID.Read() && !Result.IsClosed && Result.HasRows)
                 {
                     ID = (Int64)ResultID.GetValue(0);
                 }
@@ -158,7 +158,7 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read())
+                if (Result.Read() && !Result.IsClosed && Result.HasRows)
                 {
                     return (Int64)Result.GetValue(0);
                 }
@@ -174,7 +174,7 @@ namespace ProjetNET
             SQLiteDataReader ResultID = CommandID.ExecuteReader();
             if (ResultID != null)
             {
-                if (ResultID.Read())
+                if (ResultID.Read() && !Result.IsClosed && Result.HasRows)
                 {
                     ID = (Int64)ResultID.GetValue(0);
                 }
@@ -199,7 +199,7 @@ namespace ProjetNET
             String[] Tables = {"Articles", "Familles", "Marques", "SousFamilles"};
             foreach(String Table in Tables)
             {
-                SQLiteCommand CommandClear = new SQLiteCommand("DELETE FROM " + Table);
+                SQLiteCommand CommandClear = new SQLiteCommand("DELETE FROM " + Table, Connection);
                 CommandClear.ExecuteNonQuery();
             }
         }
@@ -212,7 +212,7 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read())
+                if (Result.Read() && !Result.IsClosed && Result.HasRows)
                 {
                     return (Int64)Result.GetValue(0) > -1;
                 }
