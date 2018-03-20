@@ -13,12 +13,13 @@ namespace ProjetNET
     public partial class MainWindow : Form
     {
         private String XMLFilePath;
-        private DBConnect DB;
 
         public MainWindow()
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
+            DBConnect.GetInstance().CreateSF("A", "B");
+            DBConnect.GetInstance().CreateSF("B", "B");
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -47,7 +48,7 @@ namespace ProjetNET
 
         private void MainWindow_FormClosing(object sender, EventArgs e)
         {
-            DB.Close();
+            DBConnect.GetInstance().Close();
         }
     }
 }
