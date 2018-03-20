@@ -39,10 +39,15 @@ namespace ProjetNET
             int Progress = 0;
             foreach (XmlNode Node in NodeList)
             {
-                if (DBConnect.GetInstance().Exists(Node.Attributes.GetNamedItem("refArticle").Value))
-                    DBConnect.GetInstance().UpdateArticle(Node);
-                else
-                    DBConnect.GetInstance().AddArticle(Node);
+                int RefArticle = 0;
+                bool Parsed = int.TryParse(Node.Attributes.GetNamedItem("refArticle").Value, out RefArticle);
+                if (Parsed)
+                {
+                    if (DBConnect.GetInstance().ArticleExists(RefArticle))
+                        DBConnect.GetInstance().UpdateArticle(Node);
+                    else
+                        DBConnect.GetInstance().AddArticle(Node);
+                }
                 ProgressBar1.Value = (Progress * 100) / NodeList.Count;
                 Progress++;
             }
