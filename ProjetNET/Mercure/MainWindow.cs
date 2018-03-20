@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Data.SQLite;
+using System.Data.SqlClient;
 
 namespace ProjetNET
 {
@@ -19,7 +20,9 @@ namespace ProjetNET
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
-            //SqlDataAdapter
+            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT * FROM Articles", DBConnect.GetInstance().GetConnection());
+            DataTable Dt = new DataTable();
+            Adapter.Fill(Dt);
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
