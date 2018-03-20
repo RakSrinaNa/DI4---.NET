@@ -39,7 +39,7 @@ namespace ProjetNET
 
         public void AddArticle(XmlNode Article)
         {
-            Int64 SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
+            long SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, 0)");
             CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
@@ -51,7 +51,7 @@ namespace ProjetNET
 
         public void UpdateArticle(XmlNode Article)
         {
-            Int64 SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
+            long SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
             SQLiteCommand CommandInsert = new SQLiteCommand("UPDATE Articles SET Description=@Desc, RefSousFamille=@SF, RefMarque=@M, PrixHT=@PHT WHERE RefArticle=@ID");
             CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
@@ -61,7 +61,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
         }
 
-        public Int64 CreateSF(String Name, String Famille)
+        public long CreateSF(String Name, String Famille)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefSousFamille FROM SousFamilles WHERE Nom = @Name", Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
@@ -69,9 +69,11 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read() && !Result.IsClosed && Result.HasRows)
+                if (Result.Read())
                 {
-                    return (Int64)Result.GetValue(0);
+                    Object Obj = Result["RefSousFamille"];
+                    if (Obj != System.DBNull.Value)
+                        return Convert.ToInt64(Obj);
                 }
                 Result.Close();
             }
@@ -80,14 +82,16 @@ namespace ProjetNET
                 throw new FieldAccessException("Getting SF failed");
             }
 
-            Int64 ID = 0;
-            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefSousFamille) FROM SousFamilles", Connection);
+            long ID = 0;
+            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefSousFamille) AS ID FROM SousFamilles", Connection);
             SQLiteDataReader ResultID = CommandID.ExecuteReader();
             if (ResultID != null)
             {
-                if (ResultID.Read() && !Result.IsClosed && Result.HasRows)
+                if (ResultID.Read())
                 {
-                    ID = (Int64)ResultID.GetValue(0);
+                    Object Obj = ResultID["ID"];
+                    if (Obj != System.DBNull.Value)
+                        ID = Convert.ToInt64(Obj);
                 }
                 ResultID.Close();
             }
@@ -106,7 +110,7 @@ namespace ProjetNET
             return ID;
         }
 
-        public Int64 CreateM(String Name)
+        public long CreateM(String Name)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefMarque FROM Marques WHERE Nom = @Name", Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
@@ -114,9 +118,11 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read() && !Result.IsClosed && Result.HasRows)
+                if (Result.Read())
                 {
-                    return (Int64)Result.GetValue(0);
+                    Object Obj = Result["RefMarque"];
+                    if (Obj != System.DBNull.Value)
+                        return Convert.ToInt64(Obj);
                 }
                 Result.Close();
             }
@@ -125,14 +131,16 @@ namespace ProjetNET
                 throw new FieldAccessException("Getting M failed");
             }
 
-            Int64 ID = 0;
-            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefMarque) FROM Marques", Connection);
+            long ID = 0;
+            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefMarque) AS ID FROM Marques", Connection);
             SQLiteDataReader ResultID = CommandID.ExecuteReader();
             if (ResultID != null)
             {
-                if (ResultID.Read() && !Result.IsClosed && Result.HasRows)
+                if (ResultID.Read())
                 {
-                    ID = (Int64)ResultID.GetValue(0);
+                    Object Obj = ResultID["ID"];
+                    if (Obj != System.DBNull.Value)
+                        ID = Convert.ToInt64(Obj);
                 }
                 ResultID.Close();
             }
@@ -150,7 +158,7 @@ namespace ProjetNET
             return ID;
         }
 
-        public Int64 CreateF(String Name)
+        public long CreateF(String Name)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefFamille FROM Familles WHERE Nom = @Name", Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
@@ -158,9 +166,11 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read() && !Result.IsClosed && Result.HasRows)
+                if (Result.Read())
                 {
-                    return (Int64)Result.GetValue(0);
+                    Object Obj = Result["RefFamille"];
+                    if (Obj != System.DBNull.Value)
+                        return Convert.ToInt64(Obj);
                 }
                 Result.Close();
             }
@@ -169,14 +179,16 @@ namespace ProjetNET
                 throw new FieldAccessException("Getting F failed");
             }
 
-            Int64 ID = 0;
-            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefFamille) FROM Familles", Connection);
+            long ID = 0;
+            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefFamille) AS ID FROM Familles", Connection);
             SQLiteDataReader ResultID = CommandID.ExecuteReader();
             if (ResultID != null)
             {
-                if (ResultID.Read() && !Result.IsClosed && Result.HasRows)
+                if (ResultID.Read())
                 {
-                    ID = (Int64)ResultID.GetValue(0);
+                    Object Obj = ResultID["ID"];
+                    if (Obj != System.DBNull.Value)
+                        ID = Convert.ToInt64(Obj);
                 }
                 ResultID.Close();
             }
@@ -212,9 +224,11 @@ namespace ProjetNET
             SQLiteDataReader Result = CommandSelect.ExecuteReader();
             if (Result != null)
             {
-                if (Result.Read() && !Result.IsClosed && Result.HasRows)
+                if (Result.Read())
                 {
-                    return (Int64)Result.GetValue(0) > -1;
+                    Object Obj = Result["RefArticle"];
+                    if (Obj != System.DBNull.Value)
+                        return Convert.ToInt64(Obj) != -1;
                 }
                 Result.Close();
             }
