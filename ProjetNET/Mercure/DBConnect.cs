@@ -35,6 +35,25 @@ namespace ProjetNET
         public void AddArticle(XmlNode Article)
         {
             Int64 SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
+
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, 0)");
+            CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
+            CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
+            CommandInsert.Parameters.AddWithValue("@SF", SFRef);
+            CommandInsert.Parameters.AddWithValue("@M", CreateM(Article.SelectSingleNode("marque").InnerText));
+            CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
+        }
+
+        public void UpdateArticle(XmlNode Article)
+        {
+            Int64 SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
+
+            SQLiteCommand CommandInsert = new SQLiteCommand("UPDATE Articles SET Description=@Desc, RefSousFamille=@SF, RefMarque=@M, PrixHT=@PHT WHERE RefArticle=@ID");
+            CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
+            CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
+            CommandInsert.Parameters.AddWithValue("@SF", SFRef);
+            CommandInsert.Parameters.AddWithValue("@M", CreateM(Article.SelectSingleNode("marque").InnerText));
+            CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
         }
 
         public Int64 CreateSF(String Name, String Famille)
@@ -47,7 +66,7 @@ namespace ProjetNET
             {
                 if (Result.Read())
                 {
-                    return (int)Result.GetValue(0);
+                    return (Int64)Result.GetValue(0);
                 }
                 Result.Close();
             }
@@ -77,15 +96,128 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@RefF", CreateF(Famille));
             CommandInsert.Parameters.AddWithValue("@Name", Name);
 
-            int ResultInsert = (int)CommandInsert.ExecuteScalar();
-            if (ResultInsert != 1)
+            if (CommandInsert.ExecuteNonQuery() != 1)
                 throw new FieldAccessException("Inserting SF failed");
+            return ID;
+        }
+
+        public Int64 CreateM(String Name)
+        {
+            SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefMarque FROM Marques WHERE Nom = @Name", Connection);
+            CommandSelect.Parameters.AddWithValue("@Name", Name);
+
+            SQLiteDataReader Result = CommandSelect.ExecuteReader();
+            if (Result != null)
+            {
+                if (Result.Read())
+                {
+                    return (Int64)Result.GetValue(0);
+                }
+                Result.Close();
+            }
+            else
+            {
+                throw new FieldAccessException("Getting M failed");
+            }
+
+            Int64 ID = 0;
+            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefMarque) FROM Marques", Connection);
+            SQLiteDataReader ResultID = CommandID.ExecuteReader();
+            if (ResultID != null)
+            {
+                if (ResultID.Read())
+                {
+                    ID = (Int64)ResultID.GetValue(0);
+                }
+                ResultID.Close();
+            }
+            else
+            {
+                throw new FieldAccessException("Getting M failed");
+            }
+
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Marques (RefMarque, Nom) VALUES (@ID, @Name)", Connection);
+            CommandInsert.Parameters.AddWithValue("@ID", ++ID);
+            CommandInsert.Parameters.AddWithValue("@Name", Name);
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new FieldAccessException("Inserting M failed");
             return ID;
         }
 
         public Int64 CreateF(String Name)
         {
-            return 1000;
+            SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefFamille FROM Familles WHERE Nom = @Name", Connection);
+            CommandSelect.Parameters.AddWithValue("@Name", Name);
+
+            SQLiteDataReader Result = CommandSelect.ExecuteReader();
+            if (Result != null)
+            {
+                if (Result.Read())
+                {
+                    return (Int64)Result.GetValue(0);
+                }
+                Result.Close();
+            }
+            else
+            {
+                throw new FieldAccessException("Getting F failed");
+            }
+
+            Int64 ID = 0;
+            SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefFamille) FROM Familles", Connection);
+            SQLiteDataReader ResultID = CommandID.ExecuteReader();
+            if (ResultID != null)
+            {
+                if (ResultID.Read())
+                {
+                    ID = (Int64)ResultID.GetValue(0);
+                }
+                ResultID.Close();
+            }
+            else
+            {
+                throw new FieldAccessException("Getting F failed");
+            }
+
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Familles (RefFamille, Nom) VALUES (@ID, @Name)", Connection);
+            CommandInsert.Parameters.AddWithValue("@ID", ++ID);
+            CommandInsert.Parameters.AddWithValue("@Name", Name);
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new FieldAccessException("Inserting F failed");
+            return ID;
+        }
+
+        public void Clear()
+        {
+            String[] Tables = {"Articles", "Familles", "Marques", "SousFamilles"};
+            foreach(String Table in Tables)
+            {
+                SQLiteCommand CommandClear = new SQLiteCommand("DELETE FROM " + Table);
+                CommandClear.ExecuteNonQuery();
+            }
+        }
+
+        public bool ArticleExists(int ID)
+        {
+            SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefArticle FROM Articles WHERE RefArticle = @ID", Connection);
+            CommandSelect.Parameters.AddWithValue("@ID", ID);
+
+            SQLiteDataReader Result = CommandSelect.ExecuteReader();
+            if (Result != null)
+            {
+                if (Result.Read())
+                {
+                    return (Int64)Result.GetValue(0) > -1;
+                }
+                Result.Close();
+            }
+            else
+            {
+                throw new FieldAccessException("Getting A failed");
+            }
+            return false;
         }
     }
 }
