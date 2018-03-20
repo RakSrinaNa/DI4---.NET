@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.Data.SQLite;
 
 namespace ProjetNET
 {
@@ -18,8 +19,7 @@ namespace ProjetNET
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
-            DBConnect.GetInstance().CreateSF("A", "B");
-            DBConnect.GetInstance().CreateSF("B", "B");
+            //SqlDataAdapter
         }
 
         private void MainWindow_Load(object sender, EventArgs e)

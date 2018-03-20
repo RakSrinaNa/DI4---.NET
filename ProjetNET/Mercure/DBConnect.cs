@@ -19,6 +19,11 @@ namespace ProjetNET
             return INSTANCE;
         }
 
+        public SQLiteConnection GetConnection()
+        {
+            return Connection;
+        }
+
         private DBConnect()
         {
             Connection = new SQLiteConnection("Data Source=Mercure.SQLite;Version=3;");

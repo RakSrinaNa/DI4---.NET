@@ -34,6 +34,7 @@
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectionXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.IntegrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listView1 = new System.Windows.Forms.ListView();
             this.MainStatusStrip.SuspendLayout();
             this.MyMainMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -42,9 +43,9 @@
             // 
             this.MainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripStatusLabel1});
-            this.MainStatusStrip.Location = new System.Drawing.Point(0, 240);
+            this.MainStatusStrip.Location = new System.Drawing.Point(0, 385);
             this.MainStatusStrip.Name = "MainStatusStrip";
-            this.MainStatusStrip.Size = new System.Drawing.Size(284, 22);
+            this.MainStatusStrip.Size = new System.Drawing.Size(506, 22);
             this.MainStatusStrip.TabIndex = 0;
             this.MainStatusStrip.Text = "statusStrip1";
             // 
@@ -60,7 +61,7 @@
             this.IntegrationToolStripMenuItem});
             this.MyMainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MyMainMenuStrip.Name = "MyMainMenuStrip";
-            this.MyMainMenuStrip.Size = new System.Drawing.Size(284, 24);
+            this.MyMainMenuStrip.Size = new System.Drawing.Size(506, 24);
             this.MyMainMenuStrip.TabIndex = 1;
             this.MyMainMenuStrip.Text = "menuStrip1";
             // 
@@ -86,11 +87,21 @@
             this.IntegrationToolStripMenuItem.Text = "Integration";
             this.IntegrationToolStripMenuItem.Click += new System.EventHandler(this.IntegrationToolStripMenuItem_Click);
             // 
+            // listView1
+            // 
+            this.listView1.Location = new System.Drawing.Point(12, 27);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(482, 355);
+            this.listView1.TabIndex = 2;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(506, 407);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.MyMainMenuStrip);
             this.Name = "MainWindow";
@@ -113,6 +124,7 @@
         private System.Windows.Forms.ToolStripMenuItem SelectionXMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem IntegrationToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel ToolStripStatusLabel1;
+        private System.Windows.Forms.ListView listView1;
     }
 }
 
