@@ -57,7 +57,16 @@ namespace ProjetNET
             {
                 if (listView1.SelectedItems.Count == 1)
                 {
+                    ListViewItem Item = listView1.SelectedItems[0];
+                    Article Article = new Article();
+                    Article.Reference = Item.SubItems[0].Text;
+                    Article.Description = Item.SubItems[1].Text;
+                    Article.SubFamily = Int64.Parse(Item.SubItems[2].Text, System.Globalization.CultureInfo.CurrentUICulture);
+                    Article.Brand = Int64.Parse(Item.SubItems[3].Text, System.Globalization.CultureInfo.CurrentUICulture);
+                    Article.Price = double.Parse(Item.SubItems[4].Text, System.Globalization.CultureInfo.CurrentUICulture);
+                    Article.Quantity = Int64.Parse(Item.SubItems[5].Text, System.Globalization.CultureInfo.CurrentUICulture);
 
+                    Console.WriteLine(Article);
                 }
             }
         }
@@ -139,7 +148,7 @@ namespace ProjetNET
                     case 3:
                     case 4:
                     case 5:
-                        return (Inverted ? -1 : 1) * (int)(double.Parse(((ListViewItem)x).SubItems[Col].Text, System.Globalization.CultureInfo.InvariantCulture) - double.Parse(((ListViewItem)y).SubItems[Col].Text, System.Globalization.CultureInfo.InvariantCulture));
+                        return (Inverted ? -1 : 1) * (int)(double.Parse(((ListViewItem)x).SubItems[Col].Text, System.Globalization.CultureInfo.CurrentUICulture) - double.Parse(((ListViewItem)y).SubItems[Col].Text, System.Globalization.CultureInfo.CurrentUICulture));
                     default:
                         return (Inverted ? -1 : 1) * String.Compare(((ListViewItem)x).SubItems[Col].Text, ((ListViewItem)y).SubItems[Col].Text);
                 }

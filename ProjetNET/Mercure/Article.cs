@@ -11,71 +11,11 @@ namespace ProjetNET
         {
         }
 
-        public string Reference
-        {
-            get
-            {
-                return Reference;
-            }
-            set
-            {
-                Reference = value;
-            }
-        }
-        public string Description
-        {
-            get
-            {
-                return Description;
-            }
-            set
-            {
-                Description = value;
-            }
-        }
-        public int Brand
-        {
-            get
-            {
-                return Brand;
-            }
-            set
-            {
-                Brand = value;
-            }
-        }
-        public int Family
-        {
-            get
-            {
-                return Family;
-            }
-            set
-            {
-                Family = value;
-            }
-        }
-        public int SubFamily
-        {
-            get
-            {
-                return SubFamily;
-            }
-            set
-            {
-                SubFamily = value;
-            }
-        }
-        public float Price
-        {
-            get
-            {
-                return Price;
-            }
-            set
-            {
-                Price = value;
-            }
-        }
+        public string Reference { get; set; }
+        public string Description { get; set; }
+        public long Brand { get; set; }
+        public long Quantity { get;set; }
+        public long SubFamily { get; set; }
+        public double Price { get; set; }
     }
 }
