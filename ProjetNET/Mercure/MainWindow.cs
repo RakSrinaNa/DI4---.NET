@@ -25,6 +25,7 @@ namespace ProjetNET
             DataTable Dt = new DataTable();
             Adapter.Fill(Dt);
 
+            listView1.KeyPress += new KeyPressEventHandler(OnListViewKeyPressed);
             listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
             listView1.ColumnClick += new ColumnClickEventHandler(OnColumnClick);
             listView1.ListViewItemSorter = new ListViewItemComparer();
@@ -48,6 +49,17 @@ namespace ProjetNET
                 listView1.Items.Add(ListItem);
             }
 
+        }
+
+        private void OnListViewKeyPressed(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                if (listView1.SelectedItems.Count == 1)
+                {
+
+                }
+            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
