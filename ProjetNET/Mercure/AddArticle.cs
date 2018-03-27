@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace ProjetNET
 {
@@ -15,6 +16,26 @@ namespace ProjetNET
         {
             InitializeComponent();
             this.DialogResult = DialogResult.Cancel;
+
+            SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
+            SQLiteCommand CommandSelect = new SQLiteCommand("SELECT * FROM Marques", Connection);
+            SQLiteDataReader Result = CommandSelect.ExecuteReader();
+            if (Result != null)
+            {
+                if (Result.Read())
+                {
+                    Object Obj = Result["RefMarque"];
+                    if (Obj != System.DBNull.Value)
+                    {
+                        ListBrands.Add(Convert.ToInt64(Obj));
+                    }
+                }
+                Result.Close();
+            }
+            else
+            {
+                throw new FieldAccessException("Getting A failed");
+            }
         }
 
         public Article GetArticle()
@@ -23,7 +44,6 @@ namespace ProjetNET
             Art.Reference = TextBoxReference.Text;
             Art.Description = TextBoxDescription.Text;
             Art.Brand = ComboBoxBrand.SelectedItem;
-            Art.Family = ComboBoxFamily.SelectedItem;
             Art.SubFamily = ComboBoxSubFamily.SelectedItem;
             bool ok;
             float Price;
@@ -38,11 +58,9 @@ namespace ProjetNET
         {
             TextBoxReference.Text = Art.Reference;
             TextBoxDescription.Text = Art.Description;
-            Art.Brand = ComboBoxBrand.SelectedItem;
-            Art.Family = ComboBoxFamily.SelectedItem;
-            Art.SubFamily = ComboBoxSubFamily.SelectedItem;
+            Art.Brand = ListBrands[ComboBoxBrand.SelectedIndex]; // TODO
+            Art.SubFamily = ComboBoxSubFamily.SelectedIndex; // TODO
             TextBoxPrice.Text = Art.Price.ToString();
-            return Art;
         }
 
 
@@ -56,5 +74,8 @@ namespace ProjetNET
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+        private List<long> ListBrands;
+        private List<long> ListSubFamilies;
     }
 }
