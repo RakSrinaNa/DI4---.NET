@@ -20,9 +20,17 @@ namespace ProjetNET
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
-            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT * FROM Articles", DBConnect.GetInstance().GetConnection());
+            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT * FROM Marques", DBConnect.GetInstance().GetConnection());
             DataTable Dt = new DataTable();
             Adapter.Fill(Dt);
+
+            for (int i = 0; i < Dt.Rows.Count; i++)
+            {
+                DataRow Dr = Dt.Rows[i];
+                ListViewItem ListItem = new ListViewItem(Dr["Nom"].ToString());
+                listView1.Items.Add(ListItem);
+            }
+
         }
 
         private void MainWindow_Load(object sender, EventArgs e)

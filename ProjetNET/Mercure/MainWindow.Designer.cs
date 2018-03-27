@@ -33,7 +33,6 @@
             this.MyMainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectionXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.IntegrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
             this.MainStatusStrip.SuspendLayout();
             this.MyMainMenuStrip.SuspendLayout();
@@ -57,8 +56,7 @@
             // MyMainMenuStrip
             // 
             this.MyMainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileToolStripMenuItem,
-            this.IntegrationToolStripMenuItem});
+            this.FileToolStripMenuItem});
             this.MyMainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MyMainMenuStrip.Name = "MyMainMenuStrip";
             this.MyMainMenuStrip.Size = new System.Drawing.Size(506, 24);
@@ -76,16 +74,9 @@
             // SelectionXMLToolStripMenuItem
             // 
             this.SelectionXMLToolStripMenuItem.Name = "SelectionXMLToolStripMenuItem";
-            this.SelectionXMLToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.SelectionXMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.SelectionXMLToolStripMenuItem.Text = "XML Selection";
             this.SelectionXMLToolStripMenuItem.Click += new System.EventHandler(this.SelectionXMLToolStripMenuItem_Click);
-            // 
-            // IntegrationToolStripMenuItem
-            // 
-            this.IntegrationToolStripMenuItem.Name = "IntegrationToolStripMenuItem";
-            this.IntegrationToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
-            this.IntegrationToolStripMenuItem.Text = "Integration";
-            this.IntegrationToolStripMenuItem.Click += new System.EventHandler(this.IntegrationToolStripMenuItem_Click);
             // 
             // listView1
             // 
@@ -122,7 +113,6 @@
         private System.Windows.Forms.MenuStrip MyMainMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem FileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SelectionXMLToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem IntegrationToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel ToolStripStatusLabel1;
         private System.Windows.Forms.ListView listView1;
     }

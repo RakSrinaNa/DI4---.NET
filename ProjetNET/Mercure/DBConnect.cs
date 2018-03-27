@@ -41,24 +41,30 @@ namespace ProjetNET
         {
             long SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
-            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, 0)");
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, 0)", Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
             CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
             CommandInsert.Parameters.AddWithValue("@SF", SFRef);
             CommandInsert.Parameters.AddWithValue("@M", CreateM(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new FieldAccessException("Inserting A failed");
         }
 
         public void UpdateArticle(XmlNode Article)
         {
             long SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
-            SQLiteCommand CommandInsert = new SQLiteCommand("UPDATE Articles SET Description=@Desc, RefSousFamille=@SF, RefMarque=@M, PrixHT=@PHT WHERE RefArticle=@ID");
+            SQLiteCommand CommandInsert = new SQLiteCommand("UPDATE Articles SET Description=@Desc, RefSousFamille=@SF, RefMarque=@M, PrixHT=@PHT WHERE RefArticle=@ID", Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
             CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
             CommandInsert.Parameters.AddWithValue("@SF", SFRef);
             CommandInsert.Parameters.AddWithValue("@M", CreateM(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new FieldAccessException("Update A failed");
         }
 
         public long CreateSF(String Name, String Famille)
