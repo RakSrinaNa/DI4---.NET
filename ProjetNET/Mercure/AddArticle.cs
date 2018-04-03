@@ -43,8 +43,8 @@ namespace ProjetNET
             Article Art = new Article();
             Art.Reference = TextBoxReference.Text;
             Art.Description = TextBoxDescription.Text;
-            Art.Brand = ComboBoxBrand.SelectedItem;
-            Art.SubFamily = ComboBoxSubFamily.SelectedItem;
+            Art.Brand = 0;// ComboBoxBrand.SelectedItem;
+            Art.SubFamily = 0;// ComboBoxSubFamily.SelectedItem;
             bool ok;
             float Price;
             ok = float.TryParse(TextBoxPrice.Text, out Price);

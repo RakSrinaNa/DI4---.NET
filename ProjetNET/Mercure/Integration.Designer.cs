@@ -55,15 +55,15 @@
             this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.TableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.TableLayoutPanel1.Size = new System.Drawing.Size(353, 181);
+            this.TableLayoutPanel1.Size = new System.Drawing.Size(452, 237);
             this.TableLayoutPanel1.TabIndex = 0;
             // 
             // ProgressBar1
             // 
             this.ProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProgressBar1.Location = new System.Drawing.Point(3, 163);
+            this.ProgressBar1.Location = new System.Drawing.Point(3, 219);
             this.ProgressBar1.Name = "ProgressBar1";
-            this.ProgressBar1.Size = new System.Drawing.Size(347, 15);
+            this.ProgressBar1.Size = new System.Drawing.Size(446, 15);
             this.ProgressBar1.TabIndex = 0;
             // 
             // TableLayoutPanel2
@@ -82,15 +82,15 @@
             this.TableLayoutPanel2.Name = "TableLayoutPanel2";
             this.TableLayoutPanel2.RowCount = 1;
             this.TableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TableLayoutPanel2.Size = new System.Drawing.Size(347, 74);
+            this.TableLayoutPanel2.Size = new System.Drawing.Size(446, 102);
             this.TableLayoutPanel2.TabIndex = 1;
             // 
             // BrowseButton
             // 
             this.BrowseButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BrowseButton.Location = new System.Drawing.Point(263, 3);
+            this.BrowseButton.Location = new System.Drawing.Point(337, 3);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(81, 68);
+            this.BrowseButton.Size = new System.Drawing.Size(106, 96);
             this.BrowseButton.TabIndex = 0;
             this.BrowseButton.Text = "Browse";
             this.BrowseButton.UseVisualStyleBackColor = true;
@@ -101,7 +101,7 @@
             this.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TextBox1.Location = new System.Drawing.Point(3, 3);
             this.TextBox1.Name = "TextBox1";
-            this.TextBox1.Size = new System.Drawing.Size(254, 20);
+            this.TextBox1.Size = new System.Drawing.Size(328, 20);
             this.TextBox1.TabIndex = 1;
             this.TextBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
@@ -115,11 +115,11 @@
             this.TableLayoutPanel3.Controls.Add(this.UpdateButton, 0, 0);
             this.TableLayoutPanel3.Controls.Add(this.NewButton, 1, 0);
             this.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TableLayoutPanel3.Location = new System.Drawing.Point(3, 83);
+            this.TableLayoutPanel3.Location = new System.Drawing.Point(3, 111);
             this.TableLayoutPanel3.Name = "TableLayoutPanel3";
             this.TableLayoutPanel3.RowCount = 1;
             this.TableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TableLayoutPanel3.Size = new System.Drawing.Size(347, 74);
+            this.TableLayoutPanel3.Size = new System.Drawing.Size(446, 102);
             this.TableLayoutPanel3.TabIndex = 2;
             // 
             // UpdateButton
@@ -129,7 +129,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UpdateButton.Location = new System.Drawing.Point(3, 3);
             this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(167, 68);
+            this.UpdateButton.Size = new System.Drawing.Size(217, 96);
             this.UpdateButton.TabIndex = 1;
             this.UpdateButton.Text = "Update";
             this.UpdateButton.UseVisualStyleBackColor = true;
@@ -138,9 +138,9 @@
             // NewButton
             // 
             this.NewButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NewButton.Location = new System.Drawing.Point(176, 3);
+            this.NewButton.Location = new System.Drawing.Point(226, 3);
             this.NewButton.Name = "NewButton";
-            this.NewButton.Size = new System.Drawing.Size(168, 68);
+            this.NewButton.Size = new System.Drawing.Size(217, 96);
             this.NewButton.TabIndex = 2;
             this.NewButton.Text = "New";
             this.NewButton.UseVisualStyleBackColor = true;
@@ -150,7 +150,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(353, 181);
+            this.ClientSize = new System.Drawing.Size(452, 237);
             this.Controls.Add(this.TableLayoutPanel1);
             this.Name = "Integration";
             this.Text = "Integration";

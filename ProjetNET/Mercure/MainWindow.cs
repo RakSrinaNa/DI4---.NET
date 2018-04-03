@@ -21,6 +21,14 @@ namespace ProjetNET
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
+
+            LoadDatabase();
+        }
+
+        private void LoadDatabase()
+        {
+            listView1.Columns.Clear();
+            listView1.Items.Clear();
             SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT * FROM Articles", DBConnect.GetInstance().GetConnection());
             DataTable Dt = new DataTable();
             Adapter.Fill(Dt);
@@ -49,6 +57,7 @@ namespace ProjetNET
                 listView1.Items.Add(ListItem);
             }
 
+            Adapter.Dispose();
         }
 
         private void OnListViewKeyPressed(object sender, KeyPressEventArgs e)
@@ -81,6 +90,7 @@ namespace ProjetNET
         {
             Integration MyIntegration = new Integration();
             MyIntegration.ShowDialog();
+            LoadDatabase();
         }
 
         private void IntegrationToolStripMenuItem_Click(object sender, EventArgs e)
