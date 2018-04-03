@@ -19,7 +19,7 @@ namespace ProjetNET
 
     public partial class AddArticle : Form
     {
-        public AddArticle()
+        public AddArticle(Article Article)
         {
             ListBrands = new List<long>();
             ListSubFamilies = new List<long>();
@@ -53,6 +53,9 @@ namespace ProjetNET
             {
                 throw new FieldAccessException("Getting A failed");
             }
+
+            if (Article != null)
+                SetArticle(Article);
         }
 
         public Article GetArticle()
