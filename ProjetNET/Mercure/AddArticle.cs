@@ -32,24 +32,22 @@ namespace ProjetNET
 
         private void Construct(Article Article)
         {
-            ListBrands = new List<long>();
-            ListSubFamilies = new List<long>();
             this.DialogResult = DialogResult.Cancel;
 
             SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
-            SQLiteCommand CommandSelect = new SQLiteCommand("SELECT * FROM Marques", Connection);
-            SQLiteDataReader Result = CommandSelect.ExecuteReader();
-            if (Result != null)
+            SQLiteCommand CommandSelectBrands = new SQLiteCommand("SELECT * FROM Marques", Connection);
+            SQLiteDataReader ResultBrands = CommandSelectBrands.ExecuteReader();
+            if (ResultBrands != null)
             {
-                if (Result.Read())
+                while (ResultBrands.Read())
                 {
-                    Object ObjId = Result["RefMarque"];
+                    Object ObjId = ResultBrands["RefMarque"];
                     long BrandId = 0;
                     if (ObjId != System.DBNull.Value)
                     {
                         BrandId = Convert.ToInt64(ObjId);
                     }
-                    Object ObjName = Result["Nom"];
+                    Object ObjName = ResultBrands["Nom"];
                     string BrandName = "";
                     if (ObjName != System.DBNull.Value)
                     {
@@ -57,11 +55,37 @@ namespace ProjetNET
                     }
                     ComboBoxBrand.Items.Add(new ComboBoxItem { Name = BrandName, Value = BrandId });
                 }
-                Result.Close();
+                ResultBrands.Close();
             }
             else
             {
-                throw new FieldAccessException("Getting A failed");
+                throw new FieldAccessException("Getting brands failed");
+            }
+            SQLiteCommand CommandSelectSF = new SQLiteCommand("SELECT * FROM SousFamilles", Connection);
+            SQLiteDataReader ResultSF = CommandSelectSF.ExecuteReader();
+            if (ResultSF != null)
+            {
+                while (ResultSF.Read())
+                {
+                    Object ObjId = ResultSF["RefSousFamille"];
+                    long SFId = 0;
+                    if (ObjId != System.DBNull.Value)
+                    {
+                        SFId = Convert.ToInt64(ObjId);
+                    }
+                    Object ObjName = ResultSF["Nom"];
+                    string SFName = "";
+                    if (ObjName != System.DBNull.Value)
+                    {
+                        SFName = Convert.ToString(ObjName);
+                    }
+                    ComboBoxSubFamily.Items.Add(new ComboBoxItem { Name = SFName, Value = SFId });
+                }
+                ResultSF.Close();
+            }
+            else
+            {
+                throw new FieldAccessException("Getting subfamily failed");
             }
 
             if (Article != null)
@@ -83,10 +107,10 @@ namespace ProjetNET
 
         public void SetArticle(Article Art)
         {
-            int IndexBrand = ListBrands.FindIndex(x => x == Art.Brand);
+            int IndexBrand = ComboBoxBrand.Items.IndexOf(Art.Brand);
             if (IndexBrand < 0)
                 throw new Exception("Incorrect brand ID");
-            int IndexSF = ListBrands.FindIndex(x => x == Art.SubFamily);
+            int IndexSF = ComboBoxSubFamily.Items.IndexOf(Art.SubFamily);
             if (IndexSF < 0)
                 throw new Exception("Incorrect subfamily ID");
             TextBoxReference.Text = Art.Reference;
@@ -106,8 +130,5 @@ namespace ProjetNET
         {
             this.Close();
         }
-
-        private List<long> ListBrands;
-        private List<long> ListSubFamilies;
     }
 }
