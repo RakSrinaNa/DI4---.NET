@@ -43,8 +43,8 @@ namespace ProjetNET
             Article Art = new Article();
             Art.Reference = TextBoxReference.Text;
             Art.Description = TextBoxDescription.Text;
-            Art.Brand = ComboBoxBrand.SelectedItem;
-            Art.SubFamily = ComboBoxSubFamily.SelectedItem;
+            Art.Brand = ListBrands[ComboBoxBrand.SelectedIndex];
+            Art.SubFamily = ListSubFamilies[ComboBoxSubFamily.SelectedIndex];
             bool ok;
             float Price;
             ok = float.TryParse(TextBoxPrice.Text, out Price);
@@ -58,8 +58,10 @@ namespace ProjetNET
         {
             TextBoxReference.Text = Art.Reference;
             TextBoxDescription.Text = Art.Description;
-            Art.Brand = ListBrands[ComboBoxBrand.SelectedIndex]; // TODO
-            Art.SubFamily = ComboBoxSubFamily.SelectedIndex; // TODO
+            int IndexBrand = ListBrands.FindIndex(x => x == Art.Brand);
+            ComboBoxBrand.SelectedIndex = IndexBrand;
+            int IndexSF = ListBrands.FindIndex(x => x == Art.SubFamily);
+            ComboBoxSubFamily.SelectedIndex = IndexSF;
             TextBoxPrice.Text = Art.Price.ToString();
         }
 
