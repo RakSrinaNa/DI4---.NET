@@ -107,16 +107,24 @@ namespace ProjetNET
 
         public void SetArticle(Article Art)
         {
-            int IndexBrand = ComboBoxBrand.Items.IndexOf(Art.Brand);
-            if (IndexBrand < 0)
-                throw new Exception("Incorrect brand ID");
-            int IndexSF = ComboBoxSubFamily.Items.IndexOf(Art.SubFamily);
-            if (IndexSF < 0)
-                throw new Exception("Incorrect subfamily ID");
+            for(int BrandIndex = 0; BrandIndex < ComboBoxBrand.Items.Count; BrandIndex++)
+            {
+                if(((ComboBoxItem)(ComboBoxBrand.Items[BrandIndex])).Value == Art.Brand)
+                {
+                    ComboBoxBrand.SelectedIndex = BrandIndex;
+                    break;
+                }
+            }
+            for (int SFIndex = 0; SFIndex < ComboBoxSubFamily.Items.Count; SFIndex++)
+            {
+                if (((ComboBoxItem)(ComboBoxSubFamily.Items[SFIndex])).Value == Art.SubFamily)
+                {
+                    ComboBoxSubFamily.SelectedIndex = SFIndex;
+                    break;
+                }
+            }
             TextBoxReference.Text = Art.Reference;
             TextBoxDescription.Text = Art.Description;
-            ComboBoxBrand.SelectedIndex = IndexBrand;
-            ComboBoxSubFamily.SelectedIndex = IndexSF;
             TextBoxPrice.Text = Art.Price.ToString();
         }
 
