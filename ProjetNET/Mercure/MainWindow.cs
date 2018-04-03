@@ -23,9 +23,62 @@ namespace ProjetNET
             InitializeComponent();
 
             listView1.FullRowSelect = true;
-            listView1.MouseDoubleClick += new MouseEventHandler(OnDoubleClickArticle);
+            listView1.MouseClick += new MouseEventHandler(OnClickArticle);
 
             LoadDatabase();
+        }
+
+        private void OnClickArticle(object sender, MouseEventArgs e)
+        {
+            if (e.Clicks == 2)
+            {
+                if (listView1.SelectedItems.Count == 1)
+                {
+                    ListViewItem Item = listView1.SelectedItems[0];
+                    UpdateArticle((Article)Item.Tag);
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                ContextMenu ContextMenu = new ContextMenu();
+               
+
+                if (listView1.SelectedItems.Count == 1)
+                {
+                    ListViewItem Item = listView1.SelectedItems[0];
+                    MenuItem MenuAdd = new MenuItem("Ajouter article");
+                    MenuAdd.Click += new EventHandler((o, evt) =>
+                    {
+                        AddArticle AddArticle = new AddArticle();
+                        AddArticle.ShowDialog();
+                        LoadDatabase();
+                    });
+                    MenuItem MenuMod = new MenuItem("Ajouter article");
+                    MenuMod.Click += new EventHandler((o, evt) =>
+                    {
+                        AddArticle AddArticle = new AddArticle((Article)Item.Tag);
+                        AddArticle.ShowDialog();
+                        LoadDatabase();
+                    });
+                    MenuItem MenuDel = new MenuItem("Supprimer article");
+                    MenuDel.Click += new EventHandler((o, evt) =>
+                    {
+                        DBConnect.GetInstance().DeleteArticle(((Article)Item.Tag).Reference);
+                        LoadDatabase();
+                    });
+
+                    ContextMenu.MenuItems.Add(MenuAdd);
+                    ContextMenu.MenuItems.Add(MenuMod);
+                    ContextMenu.MenuItems.Add(MenuDel);
+                    
+                }
+
+                MenuItem MenuRfh = new MenuItem("Rafraichir");
+                MenuRfh.Click += new EventHandler((o, evt) => LoadDatabase());
+                ContextMenu.MenuItems.Add(MenuRfh);
+
+                ContextMenu.Show(this, e.Location);
+            }
         }
 
         private void LoadDatabase()
@@ -75,13 +128,26 @@ namespace ProjetNET
 
         private void OnListViewKeyDown(object sender, KeyEventArgs e)
         {
-            if ((Keys)e.KeyCode == Keys.Enter || (Keys)e.KeyCode == Keys.F5)
+            if ((Keys)e.KeyCode == Keys.Enter)
             {
                 if (listView1.SelectedItems.Count == 1)
                 {
                     ListViewItem Item = listView1.SelectedItems[0];
                     UpdateArticle((Article)Item.Tag);
                 }
+            }
+            else if ((Keys)e.KeyCode == Keys.F5)
+            {
+                LoadDatabase();
+            }
+            else if ((Keys)e.KeyCode == Keys.Delete)
+            {
+                for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                {
+                    ListViewItem Item = listView1.SelectedItems[i];
+                    DBConnect.GetInstance().DeleteArticle(((Article)Item.Tag).Reference);
+                }
+                LoadDatabase();
             }
         }
 
@@ -90,15 +156,6 @@ namespace ProjetNET
             AddArticle AddArticle = new AddArticle(article);
             AddArticle.ShowDialog();
             LoadDatabase();
-        }
-
-        private void OnDoubleClickArticle(object sender, MouseEventArgs e)
-        {
-            if (listView1.SelectedItems.Count == 1)
-            {
-                ListViewItem Item = listView1.SelectedItems[0];
-                UpdateArticle((Article)Item.Tag);
-            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)

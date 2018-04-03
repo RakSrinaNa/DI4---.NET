@@ -244,5 +244,12 @@ namespace ProjetNET
             }
             return false;
         }
+
+        public void DeleteArticle(string Ref)
+        {
+            SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefArticle = @Ref", Connection);
+            CommandDelete.Parameters.AddWithValue("@Ref", Ref);
+            CommandDelete.ExecuteNonQuery();
+        }
     }
 }
