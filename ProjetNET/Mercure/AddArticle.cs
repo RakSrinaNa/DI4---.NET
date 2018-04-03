@@ -19,11 +19,21 @@ namespace ProjetNET
             public override string ToString() { return Name; }
         }
         
+        public AddArticle()
+        {
+            InitializeComponent();
+            Construct(null);
+        }
         public AddArticle(Article Article)
+        {
+            InitializeComponent();
+            Construct(Article);
+        }
+
+        private void Construct(Article Article)
         {
             ListBrands = new List<long>();
             ListSubFamilies = new List<long>();
-            InitializeComponent();
             this.DialogResult = DialogResult.Cancel;
 
             SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
@@ -45,7 +55,7 @@ namespace ProjetNET
                     {
                         BrandName = Convert.ToString(ObjName);
                     }
-                    ComboBoxBrand.Items.Add(new ComboBoxItem { Name = BrandName, Value = BrandId});
+                    ComboBoxBrand.Items.Add(new ComboBoxItem { Name = BrandName, Value = BrandId });
                 }
                 Result.Close();
             }
@@ -86,15 +96,14 @@ namespace ProjetNET
             TextBoxPrice.Text = Art.Price.ToString();
         }
 
-
-        private void ButtonCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void ButtonOK_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void ButtonCancel_Click(object sender, EventArgs e)
+        {
             this.Close();
         }
 

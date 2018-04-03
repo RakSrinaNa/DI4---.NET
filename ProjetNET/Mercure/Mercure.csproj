@@ -83,7 +83,9 @@
     <Compile Include="AddArticle.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddArticle.Designer.cs" />
+    <Compile Include="AddArticle.Designer.cs">
+      <DependentUpon>AddArticle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Article.cs" />
     <Compile Include="Integration.cs">
       <SubType>Form</SubType>
@@ -101,7 +103,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddArticle.resx" />
+    <EmbeddedResource Include="AddArticle.resx">
+      <DependentUpon>AddArticle.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Integration.resx">
       <DependentUpon>Integration.cs</DependentUpon>
     </EmbeddedResource>
