@@ -22,6 +22,9 @@ namespace ProjetNET
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
 
+            listView1.FullRowSelect = true;
+            listView1.MouseDoubleClick += new MouseEventHandler(OnDoubleClickArticle);
+
             LoadDatabase();
         }
 
@@ -29,20 +32,21 @@ namespace ProjetNET
         {
             listView1.Columns.Clear();
             listView1.Items.Clear();
-            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT * FROM Articles", DBConnect.GetInstance().GetConnection());
+            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT Articles.RefArticle AS RefArticle, Articles.Description AS Description, Articles.PrixHT AS PrixHT, Articles.Quantite AS Quantite, SousFamilles.Nom AS SousFamille, Familles.Nom AS Famille, Marques.Nom AS Marque FROM Articles LEFT JOIN Marques ON Articles.RefMarque = Marques.RefMarque LEFT JOIN SousFamilles ON Articles.RefSousFamille = SousFamilles.RefSousFamille LEFT JOIN Familles ON SousFamilles.RefFamille = Familles.RefFamille", DBConnect.GetInstance().GetConnection());
             DataTable Dt = new DataTable();
             Adapter.Fill(Dt);
 
-            listView1.KeyPress += new KeyPressEventHandler(OnListViewKeyPressed);
+            listView1.KeyDown += new KeyEventHandler(OnListViewKeyDown);
             listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
             listView1.ColumnClick += new ColumnClickEventHandler(OnColumnClick);
             listView1.ListViewItemSorter = new ListViewItemComparer();
 
             listView1.Columns.Add("RefArticle");
             listView1.Columns.Add("Description");
-            listView1.Columns.Add("RefSousFamille");
-            listView1.Columns.Add("RefMarque");
-            listView1.Columns.Add("Prix HT");
+            listView1.Columns.Add("Famille");
+            listView1.Columns.Add("SousFamille");
+            listView1.Columns.Add("Marque");
+            listView1.Columns.Add("Prix HT (€)");
             listView1.Columns.Add("Quantité");
 
             for (int i = 0; i < Dt.Rows.Count; i++)
@@ -50,33 +54,50 @@ namespace ProjetNET
                 DataRow Dr = Dt.Rows[i];
                 ListViewItem ListItem = new ListViewItem(Dr["RefArticle"].ToString());
                 ListItem.SubItems.Add(Dr["Description"].ToString());
-                ListItem.SubItems.Add(Dr["RefSousFamille"].ToString());
-                ListItem.SubItems.Add(Dr["RefMarque"].ToString());
+                ListItem.SubItems.Add(Dr["Famille"].ToString());
+                ListItem.SubItems.Add(Dr["SousFamille"].ToString());
+                ListItem.SubItems.Add(Dr["Marque"].ToString());
                 ListItem.SubItems.Add(Dr["PrixHT"].ToString());
                 ListItem.SubItems.Add(Dr["Quantite"].ToString());
+                /*ListItem.Tag = new Article(
+                    Dr["RefArticle"].ToString(),
+                    Dr["Description"].ToString(),
+                    Convert.ToInt64(Dr["SousFamilles.RefSousFamille"].ToString()),
+                    Convert.ToInt64(Dr["Marques.RefMarque"].ToString()),
+                    double.Parse(Dr["PrixHT"].ToString()),
+                    Convert.ToInt64(Dr["Quantite"].ToString())
+                );*/
                 listView1.Items.Add(ListItem);
             }
 
             Adapter.Dispose();
         }
 
-        private void OnListViewKeyPressed(object sender, KeyPressEventArgs e)
+        private void OnListViewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Enter)
+            if ((Keys)e.KeyCode == Keys.Enter || (Keys)e.KeyCode == Keys.F5)
             {
                 if (listView1.SelectedItems.Count == 1)
                 {
                     ListViewItem Item = listView1.SelectedItems[0];
-                    Article Article = new Article();
-                    Article.Reference = Item.SubItems[0].Text;
-                    Article.Description = Item.SubItems[1].Text;
-                    Article.SubFamily = Int64.Parse(Item.SubItems[2].Text, System.Globalization.CultureInfo.CurrentUICulture);
-                    Article.Brand = Int64.Parse(Item.SubItems[3].Text, System.Globalization.CultureInfo.CurrentUICulture);
-                    Article.Price = double.Parse(Item.SubItems[4].Text, System.Globalization.CultureInfo.CurrentUICulture);
-                    Article.Quantity = Int64.Parse(Item.SubItems[5].Text, System.Globalization.CultureInfo.CurrentUICulture);
-
-                    Console.WriteLine(Article);
+                    UpdateArticle((Article)Item.Tag);
                 }
+            }
+        }
+
+        private void UpdateArticle(Article article)
+        {
+            AddArticle AddArticle = new AddArticle(article);
+            AddArticle.ShowDialog();
+            LoadDatabase();
+        }
+
+        private void OnDoubleClickArticle(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 1)
+            {
+                ListViewItem Item = listView1.SelectedItems[0];
+                UpdateArticle((Article)Item.Tag);
             }
         }
 
@@ -84,7 +105,6 @@ namespace ProjetNET
         {
 
         }
-
 
         private void SelectionXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -154,9 +174,6 @@ namespace ProjetNET
             {
                 switch (Col)
                 {
-                    case 2:
-                    case 3:
-                    case 4:
                     case 5:
                         return (Inverted ? -1 : 1) * (int)(double.Parse(((ListViewItem)x).SubItems[Col].Text, System.Globalization.CultureInfo.CurrentUICulture) - double.Parse(((ListViewItem)y).SubItems[Col].Text, System.Globalization.CultureInfo.CurrentUICulture));
                     default:
