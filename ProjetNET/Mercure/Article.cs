@@ -7,8 +7,14 @@ namespace ProjetNET
 {
     public class Article
     {
-        public Article()
+        public Article(string RefArticle, string Description, long RefSubFamily, long RefBrand, double Price, long Quantity)
         {
+            this.Reference = RefArticle;
+            this.Description = Description;
+            this.Brand = RefBrand;
+            this.SubFamily = RefSubFamily;
+            this.Price = Price;
+            this.Quantity = Quantity;
         }
 
         public string Reference { get; set; }
