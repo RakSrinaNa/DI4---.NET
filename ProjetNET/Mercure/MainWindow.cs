@@ -15,7 +15,6 @@ namespace ProjetNET
 {
     public partial class MainWindow : Form
     {
-        private String XMLFilePath; 
 
         public MainWindow()
         {
@@ -46,21 +45,21 @@ namespace ProjetNET
                 if (listView1.SelectedItems.Count == 1)
                 {
                     ListViewItem Item = listView1.SelectedItems[0];
-                    MenuItem MenuAdd = new MenuItem("Ajouter article");
+                    MenuItem MenuAdd = new MenuItem("Add article");
                     MenuAdd.Click += new EventHandler((o, evt) =>
                     {
                         AddArticle AddArticle = new AddArticle();
                         AddArticle.ShowDialog();
                         LoadDatabase();
                     });
-                    MenuItem MenuMod = new MenuItem("Modifier article");
+                    MenuItem MenuMod = new MenuItem("Edit article");
                     MenuMod.Click += new EventHandler((o, evt) =>
                     {
                         AddArticle AddArticle = new AddArticle((Article)Item.Tag);
                         AddArticle.ShowDialog();
                         LoadDatabase();
                     });
-                    MenuItem MenuDel = new MenuItem("Supprimer article");
+                    MenuItem MenuDel = new MenuItem("Delete article");
                     MenuDel.Click += new EventHandler((o, evt) =>
                     {
                         DBConnect.GetInstance().DeleteArticle(((Article)Item.Tag).Reference);
@@ -73,7 +72,7 @@ namespace ProjetNET
                     
                 }
 
-                MenuItem MenuRfh = new MenuItem("Rafraichir");
+                MenuItem MenuRfh = new MenuItem("Refresh");
                 MenuRfh.Click += new EventHandler((o, evt) => LoadDatabase());
                 ContextMenu.MenuItems.Add(MenuRfh);
 
@@ -96,11 +95,11 @@ namespace ProjetNET
 
             listView1.Columns.Add("RefArticle");
             listView1.Columns.Add("Description");
-            listView1.Columns.Add("Famille");
-            listView1.Columns.Add("SousFamille");
-            listView1.Columns.Add("Marque");
-            listView1.Columns.Add("Prix HT (€)");
-            listView1.Columns.Add("Quantité");
+            listView1.Columns.Add("Family");
+            listView1.Columns.Add("Sub Family");
+            listView1.Columns.Add("Brand");
+            listView1.Columns.Add("Price excluding VAT (€)");
+            listView1.Columns.Add("Quantity");
 
             for (int i = 0; i < Dt.Rows.Count; i++)
             {
@@ -168,18 +167,6 @@ namespace ProjetNET
             Integration MyIntegration = new Integration();
             MyIntegration.ShowDialog();
             LoadDatabase();
-        }
-
-        private void IntegrationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (XMLFilePath != null)
-            {
-               
-            }
-            else
-            {
-                ToolStripStatusLabel1.Text = "Please select a file bro/biatch!";
-            }
         }
 
         private void MainWindow_FormClosing(object sender, EventArgs e)
