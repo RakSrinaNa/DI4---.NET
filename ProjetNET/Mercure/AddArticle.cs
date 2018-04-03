@@ -10,15 +10,15 @@ using System.Data.SQLite;
 
 namespace ProjetNET
 {
-    public class ComboBoxItem
-    {
-        public string Name { get; set; }
-        public long Value { get; set; }
-        public override string ToString() { return Name; }
-    }
-
     public partial class AddArticle : Form
     {
+        private class ComboBoxItem
+        {
+            public string Name { get; set; }
+            public long Value { get; set; }
+            public override string ToString() { return Name; }
+        }
+        
         public AddArticle(Article Article)
         {
             ListBrands = new List<long>();
