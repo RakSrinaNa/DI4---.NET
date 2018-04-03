@@ -53,7 +53,7 @@ namespace ProjetNET
                         AddArticle.ShowDialog();
                         LoadDatabase();
                     });
-                    MenuItem MenuMod = new MenuItem("Ajouter article");
+                    MenuItem MenuMod = new MenuItem("Modifier article");
                     MenuMod.Click += new EventHandler((o, evt) =>
                     {
                         AddArticle AddArticle = new AddArticle((Article)Item.Tag);

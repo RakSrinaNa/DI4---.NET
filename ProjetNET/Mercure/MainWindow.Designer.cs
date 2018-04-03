@@ -74,12 +74,15 @@
             // SelectionXMLToolStripMenuItem
             // 
             this.SelectionXMLToolStripMenuItem.Name = "SelectionXMLToolStripMenuItem";
-            this.SelectionXMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.SelectionXMLToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.SelectionXMLToolStripMenuItem.Text = "XML Selection";
             this.SelectionXMLToolStripMenuItem.Click += new System.EventHandler(this.SelectionXMLToolStripMenuItem_Click);
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Location = new System.Drawing.Point(12, 27);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(482, 355);
