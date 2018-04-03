@@ -32,7 +32,7 @@ namespace ProjetNET
         {
             listView1.Columns.Clear();
             listView1.Items.Clear();
-            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT Articles.RefArticle AS RefArticle, Articles.Description AS Description, Articles.PrixHT AS PrixHT, Articles.Quantite AS Quantite, SousFamilles.Nom AS SousFamille, Familles.Nom AS Famille, Marques.Nom AS Marque FROM Articles LEFT JOIN Marques ON Articles.RefMarque = Marques.RefMarque LEFT JOIN SousFamilles ON Articles.RefSousFamille = SousFamilles.RefSousFamille LEFT JOIN Familles ON SousFamilles.RefFamille = Familles.RefFamille", DBConnect.GetInstance().GetConnection());
+            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT Marques.RefMarque AS RefMarque, SousFamilles.RefSousFamille AS RefSousFamille, Articles.RefArticle AS RefArticle, Articles.Description AS Description, Articles.PrixHT AS PrixHT, Articles.Quantite AS Quantite, SousFamilles.Nom AS SousFamille, Familles.Nom AS Famille, Marques.Nom AS Marque FROM Articles LEFT JOIN Marques ON Articles.RefMarque = Marques.RefMarque LEFT JOIN SousFamilles ON Articles.RefSousFamille = SousFamilles.RefSousFamille LEFT JOIN Familles ON SousFamilles.RefFamille = Familles.RefFamille", DBConnect.GetInstance().GetConnection());
             DataTable Dt = new DataTable();
             Adapter.Fill(Dt);
 
@@ -59,14 +59,14 @@ namespace ProjetNET
                 ListItem.SubItems.Add(Dr["Marque"].ToString());
                 ListItem.SubItems.Add(Dr["PrixHT"].ToString());
                 ListItem.SubItems.Add(Dr["Quantite"].ToString());
-                /*ListItem.Tag = new Article(
+                ListItem.Tag = new Article(
                     Dr["RefArticle"].ToString(),
                     Dr["Description"].ToString(),
-                    Convert.ToInt64(Dr["SousFamilles.RefSousFamille"].ToString()),
-                    Convert.ToInt64(Dr["Marques.RefMarque"].ToString()),
+                    Convert.ToInt64(Dr["RefSousFamille"].ToString()),
+                    Convert.ToInt64(Dr["RefMarque"].ToString()),
                     double.Parse(Dr["PrixHT"].ToString()),
                     Convert.ToInt64(Dr["Quantite"].ToString())
-                );*/
+                );
                 listView1.Items.Add(ListItem);
             }
 
