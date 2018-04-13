@@ -290,21 +290,21 @@ namespace ProjetNET
             }
         }
 
-        private void brandsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BrandsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Brands Brands = new Brands();
             Brands.ShowDialog();
             LoadDatabase();
         }
 
-        private void familiesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FamiliesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Families Families = new Families();
             Families.ShowDialog();
             LoadDatabase();
         }
 
-        private void subFamiliesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SubFamiliesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SubFamilies SubFamilies = new SubFamilies();
             SubFamilies.ShowDialog();
