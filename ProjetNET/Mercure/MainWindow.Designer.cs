@@ -33,10 +33,10 @@
             this.MyMainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectionXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.brandsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.familiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.subFamiliesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listView1 = new System.Windows.Forms.ListView();
             this.MainStatusStrip.SuspendLayout();
             this.MyMainMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -80,27 +80,16 @@
             // SelectionXMLToolStripMenuItem
             // 
             this.SelectionXMLToolStripMenuItem.Name = "SelectionXMLToolStripMenuItem";
-            this.SelectionXMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.SelectionXMLToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.SelectionXMLToolStripMenuItem.Text = "XML Selection";
             this.SelectionXMLToolStripMenuItem.Click += new System.EventHandler(this.SelectionXMLToolStripMenuItem_Click);
-            // 
-            // listView1
-            // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView1.Location = new System.Drawing.Point(12, 27);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(482, 355);
-            this.listView1.TabIndex = 2;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
             // 
             // brandsToolStripMenuItem
             // 
             this.brandsToolStripMenuItem.Name = "brandsToolStripMenuItem";
             this.brandsToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.brandsToolStripMenuItem.Text = "Brands";
+            this.brandsToolStripMenuItem.Click += new System.EventHandler(this.brandsToolStripMenuItem_Click);
             // 
             // familiesToolStripMenuItem
             // 
@@ -113,6 +102,18 @@
             this.subFamiliesToolStripMenuItem.Name = "subFamiliesToolStripMenuItem";
             this.subFamiliesToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
             this.subFamiliesToolStripMenuItem.Text = "Sub Families";
+            // 
+            // listView1
+            // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView1.Location = new System.Drawing.Point(12, 27);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(482, 355);
+            this.listView1.TabIndex = 2;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
             // 
             // MainWindow
             // 

@@ -47,16 +47,12 @@ namespace ProjetNET
                     MenuItem MenuAdd = new MenuItem("Add article");
                     MenuAdd.Click += new EventHandler((o, evt) =>
                     {
-                        AddArticle AddArticle = new AddArticle();
-                        AddArticle.ShowDialog();
-                        LoadDatabase();
+                        UpdateArticle(null);
                     });
                     MenuItem MenuMod = new MenuItem("Edit article");
                     MenuMod.Click += new EventHandler((o, evt) =>
                     {
-                        AddArticle AddArticle = new AddArticle((Article)Item.Tag);
-                        AddArticle.ShowDialog();
-                        LoadDatabase();
+                       UpdateArticle((Article)Item.Tag);
                     });
                     MenuItem MenuDel = new MenuItem("Delete article");
                     MenuDel.Click += new EventHandler((o, evt) =>
@@ -225,5 +221,11 @@ namespace ProjetNET
             }
         }
 
+        private void brandsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Brands Brands = new Brands();
+            Brands.ShowDialog();
+            LoadDatabase();
+        }
     }
 }

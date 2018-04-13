@@ -251,5 +251,19 @@ namespace ProjetNET
             CommandDelete.Parameters.AddWithValue("@Ref", Ref);
             CommandDelete.ExecuteNonQuery();
         }
+
+        public void DeleteBrand(long Ref)
+        {
+            {
+                SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefMarque = @Ref", Connection);
+                CommandDelete.Parameters.AddWithValue("@Ref", Ref);
+                CommandDelete.ExecuteNonQuery();
+            }
+            {
+                SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Marques WHERE RefMarque = @Ref", Connection);
+                CommandDelete.Parameters.AddWithValue("@Ref", Ref);
+                CommandDelete.ExecuteNonQuery();
+            }
+        }
     }
 }
