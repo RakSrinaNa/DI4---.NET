@@ -141,30 +141,38 @@ namespace ProjetNET
                 listView1.Groups.Clear();
             }
 
-            foreach (ListViewItem ListItem in listView1.Items)
+            if (SortColumn == 0 || SortColumn == 1)
             {
-                ListItem.Group = null;
-                ListViewGroup Group = null;
-                foreach (ListViewGroup GroupTest in listView1.Groups)
+                listView1.ShowGroups = false;
+            }
+            else
+            {
+                listView1.ShowGroups = true;
+                foreach (ListViewItem ListItem in listView1.Items)
                 {
-                    if (GroupTest.Header == ListItem.SubItems[SortColumn].Text)
+                    ListItem.Group = null;
+                    ListViewGroup Group = null;
+                    foreach (ListViewGroup GroupTest in listView1.Groups)
                     {
-                        Group = GroupTest;
-                        break;
+                        if (GroupTest.Header == ListItem.SubItems[SortColumn].Text)
+                        {
+                            Group = GroupTest;
+                            break;
+                        }
                     }
-                }
 
-                if (Group == null)
-                {
-                    Group = new ListViewGroup();
-                    Group.Name = ListItem.SubItems[SortColumn].Text;
-                    Group.Header = ListItem.SubItems[SortColumn].Text;
-                    listView1.Groups.Add(Group);
-                }
+                    if (Group == null)
+                    {
+                        Group = new ListViewGroup();
+                        Group.Name = ListItem.SubItems[SortColumn].Text;
+                        Group.Header = ListItem.SubItems[SortColumn].Text;
+                        listView1.Groups.Add(Group);
+                    }
 
-                Group = listView1.Groups[ListItem.SubItems[SortColumn].Text];
-                Group.Items.Add(ListItem);
-                ListItem.Group = Group;
+                    Group = listView1.Groups[ListItem.SubItems[SortColumn].Text];
+                    Group.Items.Add(ListItem);
+                    ListItem.Group = Group;
+                }
             }
         }
 
