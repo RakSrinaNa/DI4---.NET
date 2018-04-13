@@ -13,6 +13,8 @@ namespace ProjetNET
 {
     public partial class SubFamilies : Form
     {
+        private int SortColumn;
+
         public SubFamilies()
         {
             InitializeComponent();
@@ -67,38 +69,76 @@ namespace ProjetNET
 
         private void LoadDatabase()
         {
-            listView1.Columns.Clear();
-            listView1.Items.Clear();
-            SQLiteDataAdapter Adapter = new SQLiteDataAdapter(
-                "SELECT RefSousFamille, RefFamille, Nom FROM SousFamilles",
-                DBConnect.GetInstance().GetConnection());
-            DataTable Dt = new DataTable();
-            Adapter.Fill(Dt);
+            LoadDatabase(true);
+        }
 
-            listView1.KeyDown += new KeyEventHandler(OnListViewKeyDown);
-            listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            listView1.ColumnClick += new ColumnClickEventHandler(OnColumnClick);
-            listView1.ListViewItemSorter = new ListViewItemComparer();
-
-            listView1.Columns.Add("RefSousFamille");
-            listView1.Columns.Add("RefFamille");
-            listView1.Columns.Add("Nom");
-
-            for (int i = 0; i < Dt.Rows.Count; i++)
+        private void LoadDatabase(bool ShouldReloadData)
+        {
+            if (ShouldReloadData)
             {
-                DataRow Dr = Dt.Rows[i];
-                ListViewItem ListItem = new ListViewItem(Dr["RefSousFamille"].ToString());
-                ListItem.SubItems.Add(Dr["RefFamille"].ToString());
-                ListItem.SubItems.Add(Dr["Nom"].ToString());
-                ListItem.Tag = new SubFamily(
-                    Convert.ToInt64(Dr["RefSousFamille"].ToString()),
-                    Convert.ToInt64(Dr["RefFamille"].ToString()),
-                    Dr["Nom"].ToString()
-                );
-                listView1.Items.Add(ListItem);
+                listView1.Columns.Clear();
+                listView1.Items.Clear();
+                SQLiteDataAdapter Adapter = new SQLiteDataAdapter(
+                    "SELECT RefSousFamille, RefFamille, Nom FROM SousFamilles",
+                    DBConnect.GetInstance().GetConnection());
+                DataTable Dt = new DataTable();
+                Adapter.Fill(Dt);
+
+                listView1.KeyDown += new KeyEventHandler(OnListViewKeyDown);
+                listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
+                listView1.ColumnClick += new ColumnClickEventHandler(OnColumnClick);
+                listView1.ListViewItemSorter = new ListViewItemComparer();
+
+                listView1.Columns.Add("RefSousFamille");
+                listView1.Columns.Add("RefFamille");
+                listView1.Columns.Add("Nom");
+
+                for (int i = 0; i < Dt.Rows.Count; i++)
+                {
+                    DataRow Dr = Dt.Rows[i];
+                    ListViewItem ListItem = new ListViewItem(Dr["RefSousFamille"].ToString());
+                    ListItem.SubItems.Add(Dr["RefFamille"].ToString());
+                    ListItem.SubItems.Add(Dr["Nom"].ToString());
+                    ListItem.Tag = new SubFamily(
+                        Convert.ToInt64(Dr["RefSousFamille"].ToString()),
+                        Convert.ToInt64(Dr["RefFamille"].ToString()),
+                        Dr["Nom"].ToString()
+                    );
+                    listView1.Items.Add(ListItem);
+                }
+
+                Adapter.Dispose();
+            }
+            else
+            {
+                listView1.Groups.Clear();
             }
 
-            Adapter.Dispose();
+            foreach (ListViewItem ListItem in listView1.Items)
+            {
+                ListItem.Group = null;
+                ListViewGroup Group = null;
+                foreach (ListViewGroup GroupTest in listView1.Groups)
+                {
+                    if (GroupTest.Header == ListItem.SubItems[SortColumn].Text)
+                    {
+                        Group = GroupTest;
+                        break;
+                    }
+                }
+
+                if (Group == null)
+                {
+                    Group = new ListViewGroup();
+                    Group.Name = ListItem.SubItems[SortColumn].Text;
+                    Group.Header = ListItem.SubItems[SortColumn].Text;
+                    listView1.Groups.Add(Group);
+                }
+
+                Group = listView1.Groups[ListItem.SubItems[SortColumn].Text];
+                Group.Items.Add(ListItem);
+                ListItem.Group = Group;
+            }
         }
 
         private void OnColumnClick(object sender, ColumnClickEventArgs e)
@@ -111,6 +151,8 @@ namespace ProjetNET
             }
             else
             {
+                SortColumn = e.Column;
+                LoadDatabase(false);
                 listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
             }
         }

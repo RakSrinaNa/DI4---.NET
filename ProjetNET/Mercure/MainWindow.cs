@@ -17,10 +17,12 @@ namespace ProjetNET
     {
         public static event BottomBarEventHandler BottomBarEvent;
         public delegate void BottomBarEventHandler(String Text);
+        private int SortColumn;
 
         public static void ChangeStripText(String Text) 
         {
-            BottomBarEvent?.Invoke(Text);
+            if(BottomBarEvent != null)
+                BottomBarEvent.Invoke(Text);
         }
 
         public MainWindow()
@@ -86,47 +88,84 @@ namespace ProjetNET
 
         private void LoadDatabase()
         {
-            listView1.Columns.Clear();
-            listView1.Items.Clear();
-            SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT Marques.RefMarque AS RefMarque, SousFamilles.RefSousFamille AS RefSousFamille, Articles.RefArticle AS RefArticle, Articles.Description AS Description, Articles.PrixHT AS PrixHT, Articles.Quantite AS Quantite, SousFamilles.Nom AS SousFamille, Familles.Nom AS Famille, Marques.Nom AS Marque FROM Articles LEFT JOIN Marques ON Articles.RefMarque = Marques.RefMarque LEFT JOIN SousFamilles ON Articles.RefSousFamille = SousFamilles.RefSousFamille LEFT JOIN Familles ON SousFamilles.RefFamille = Familles.RefFamille", DBConnect.GetInstance().GetConnection());
-            DataTable Dt = new DataTable();
-            Adapter.Fill(Dt);
+            LoadDatabase(true);
+        }
 
-            listView1.KeyDown += new KeyEventHandler(OnListViewKeyDown);
-            listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            listView1.ColumnClick += new ColumnClickEventHandler(OnColumnClick);
-            listView1.ListViewItemSorter = new ListViewItemComparer();
-
-            listView1.Columns.Add("RefArticle");
-            listView1.Columns.Add("Description");
-            listView1.Columns.Add("Family");
-            listView1.Columns.Add("Sub Family");
-            listView1.Columns.Add("Brand");
-            listView1.Columns.Add("Price excluding VAT (€)");
-            listView1.Columns.Add("Quantity");
-
-            for (int i = 0; i < Dt.Rows.Count; i++)
+        private void LoadDatabase(bool ShouldReloadData)
+        {
+            if (ShouldReloadData)
             {
-                DataRow Dr = Dt.Rows[i];
-                ListViewItem ListItem = new ListViewItem(Dr["RefArticle"].ToString());
-                ListItem.SubItems.Add(Dr["Description"].ToString());
-                ListItem.SubItems.Add(Dr["Famille"].ToString());
-                ListItem.SubItems.Add(Dr["SousFamille"].ToString());
-                ListItem.SubItems.Add(Dr["Marque"].ToString());
-                ListItem.SubItems.Add(Dr["PrixHT"].ToString());
-                ListItem.SubItems.Add(Dr["Quantite"].ToString());
-                ListItem.Tag = new Article(
-                    Dr["RefArticle"].ToString(),
-                    Dr["Description"].ToString(),
-                    Convert.ToInt64(Dr["RefSousFamille"].ToString()),
-                    Convert.ToInt64(Dr["RefMarque"].ToString()),
-                    double.Parse(Dr["PrixHT"].ToString()),
-                    Convert.ToInt64(Dr["Quantite"].ToString())
-                );
-                listView1.Items.Add(ListItem);
+                listView1.Columns.Clear();
+                listView1.Items.Clear();
+                SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT Marques.RefMarque AS RefMarque, SousFamilles.RefSousFamille AS RefSousFamille, Articles.RefArticle AS RefArticle, Articles.Description AS Description, Articles.PrixHT AS PrixHT, Articles.Quantite AS Quantite, SousFamilles.Nom AS SousFamille, Familles.Nom AS Famille, Marques.Nom AS Marque FROM Articles LEFT JOIN Marques ON Articles.RefMarque = Marques.RefMarque LEFT JOIN SousFamilles ON Articles.RefSousFamille = SousFamilles.RefSousFamille LEFT JOIN Familles ON SousFamilles.RefFamille = Familles.RefFamille", DBConnect.GetInstance().GetConnection());
+                DataTable Dt = new DataTable();
+                Adapter.Fill(Dt);
+
+                listView1.KeyDown += new KeyEventHandler(OnListViewKeyDown);
+                listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
+                listView1.ColumnClick += new ColumnClickEventHandler(OnColumnClick);
+                listView1.ListViewItemSorter = new ListViewItemComparer();
+
+                listView1.Columns.Add("RefArticle");
+                listView1.Columns.Add("Description");
+                listView1.Columns.Add("Family");
+                listView1.Columns.Add("Sub Family");
+                listView1.Columns.Add("Brand");
+                listView1.Columns.Add("Price excluding VAT (€)");
+                listView1.Columns.Add("Quantity");
+
+                for (int i = 0; i < Dt.Rows.Count; i++)
+                {
+                    DataRow Dr = Dt.Rows[i];
+                    ListViewItem ListItem = new ListViewItem(Dr["RefArticle"].ToString());
+                    ListItem.SubItems.Add(Dr["Description"].ToString());
+                    ListItem.SubItems.Add(Dr["Famille"].ToString());
+                    ListItem.SubItems.Add(Dr["SousFamille"].ToString());
+                    ListItem.SubItems.Add(Dr["Marque"].ToString());
+                    ListItem.SubItems.Add(Dr["PrixHT"].ToString());
+                    ListItem.SubItems.Add(Dr["Quantite"].ToString());
+                    ListItem.Tag = new Article(
+                        Dr["RefArticle"].ToString(),
+                        Dr["Description"].ToString(),
+                        Convert.ToInt64(Dr["RefSousFamille"].ToString()),
+                        Convert.ToInt64(Dr["RefMarque"].ToString()),
+                        double.Parse(Dr["PrixHT"].ToString()),
+                        Convert.ToInt64(Dr["Quantite"].ToString())
+                    );
+                    listView1.Items.Add(ListItem);
+                }
+                Adapter.Dispose();
+            }
+            else
+            {
+                listView1.Groups.Clear();
             }
 
-            Adapter.Dispose();
+            foreach (ListViewItem ListItem in listView1.Items)
+            {
+                ListItem.Group = null;
+                ListViewGroup Group = null;
+                foreach (ListViewGroup GroupTest in listView1.Groups)
+                {
+                    if (GroupTest.Header == ListItem.SubItems[SortColumn].Text)
+                    {
+                        Group = GroupTest;
+                        break;
+                    }
+                }
+
+                if (Group == null)
+                {
+                    Group = new ListViewGroup();
+                    Group.Name = ListItem.SubItems[SortColumn].Text;
+                    Group.Header = ListItem.SubItems[SortColumn].Text;
+                    listView1.Groups.Add(Group);
+                }
+
+                Group = listView1.Groups[ListItem.SubItems[SortColumn].Text];
+                Group.Items.Add(ListItem);
+                ListItem.Group = Group;
+            }
         }
 
         private void OnListViewKeyDown(object sender, KeyEventArgs e)
@@ -188,6 +227,8 @@ namespace ProjetNET
             }
             else
             {
+                SortColumn = e.Column;
+                LoadDatabase(false);
                 listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
             }
         }
