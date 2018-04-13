@@ -103,6 +103,7 @@
             this.subFamiliesToolStripMenuItem.Name = "subFamiliesToolStripMenuItem";
             this.subFamiliesToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
             this.subFamiliesToolStripMenuItem.Text = "Sub Families";
+            this.subFamiliesToolStripMenuItem.Click += new System.EventHandler(this.subFamiliesToolStripMenuItem_Click);
             // 
             // listView1
             // 

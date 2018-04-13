@@ -39,13 +39,13 @@ namespace ProjetNET
 
         public void AddArticle(XmlNode Article)
         {
-            long SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
+            long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, 0)", Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
             CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
             CommandInsert.Parameters.AddWithValue("@SF", SFRef);
-            CommandInsert.Parameters.AddWithValue("@M", CreateM(Article.SelectSingleNode("marque").InnerText));
+            CommandInsert.Parameters.AddWithValue("@M", CreateBrand(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
             if (CommandInsert.ExecuteNonQuery() != 1)
@@ -54,20 +54,20 @@ namespace ProjetNET
 
         public void UpdateArticle(XmlNode Article)
         {
-            long SFRef = CreateSF(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
+            long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
             SQLiteCommand CommandInsert = new SQLiteCommand("UPDATE Articles SET Description=@Desc, RefSousFamille=@SF, RefMarque=@M, PrixHT=@PHT WHERE RefArticle=@ID", Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
             CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
             CommandInsert.Parameters.AddWithValue("@SF", SFRef);
-            CommandInsert.Parameters.AddWithValue("@M", CreateM(Article.SelectSingleNode("marque").InnerText));
+            CommandInsert.Parameters.AddWithValue("@M", CreateBrand(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
             if (CommandInsert.ExecuteNonQuery() != 1)
                 throw new FieldAccessException("Update A failed");
         }
 
-        public long CreateSF(String Name, String Famille)
+        public long CreateSubFamily(String Name, long Famille)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefSousFamille FROM SousFamilles WHERE Nom = @Name", Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
@@ -108,7 +108,7 @@ namespace ProjetNET
 
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO SousFamilles (RefSousFamille, RefFamille, Nom) VALUES (@ID, @RefF, @Name)", Connection);
             CommandInsert.Parameters.AddWithValue("@ID", ++ID);
-            CommandInsert.Parameters.AddWithValue("@RefF", CreateF(Famille));
+            CommandInsert.Parameters.AddWithValue("@RefF", Famille);
             CommandInsert.Parameters.AddWithValue("@Name", Name);
 
             if (CommandInsert.ExecuteNonQuery() != 1)
@@ -116,7 +116,12 @@ namespace ProjetNET
             return ID;
         }
 
-        public long CreateM(String Name)
+        public long CreateSubFamily(String Name, String Famille)
+        {
+            return CreateSubFamily(Name, CreateFamily(Famille));
+        }
+
+        public long CreateBrand(String Name)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefMarque FROM Marques WHERE Nom = @Name", Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
@@ -164,7 +169,7 @@ namespace ProjetNET
             return ID;
         }
 
-        public long CreateF(String Name)
+        public long CreateFamily(String Name)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefFamille FROM Familles WHERE Nom = @Name", Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
@@ -306,6 +311,48 @@ namespace ProjetNET
                     CommandDelete.Parameters.AddWithValue("@Ref", RefSF);
                     CommandDelete.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public void DeleteSubFamily(long Ref)
+        {
+            {
+                SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM SousFamilles WHERE RefSousFamille = @Ref", Connection);
+                CommandDelete.Parameters.AddWithValue("@Ref", Ref);
+                CommandDelete.ExecuteNonQuery();
+            }
+
+            {
+                SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefSousFamille = @Ref", Connection);
+                CommandDelete.Parameters.AddWithValue("@Ref", Ref);
+                CommandDelete.ExecuteNonQuery();
+            }
+
+            LinkedList<long> FToDel = new LinkedList<long>();
+            {
+                SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefFamille FROM SousFamilles WHERE RefSousFamille = @Ref", Connection);
+                CommandSelect.Parameters.AddWithValue("@Ref", Ref);
+
+                SQLiteDataReader Result = CommandSelect.ExecuteReader();
+                if (Result != null)
+                {
+                    if(Result.Read())
+                    {
+                        Object Obj = Result["RefFamille"];
+                        if (Obj != System.DBNull.Value)
+                        {
+                            FToDel.AddLast(Convert.ToInt64(Obj));
+                        }
+                    }
+                    Result.Close();
+                }
+            }
+
+            foreach (long RefF in FToDel)
+            {
+                    SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Familles WHERE RefFamille = @Ref", Connection);
+                    CommandDelete.Parameters.AddWithValue("@Ref", RefF);
+                    CommandDelete.ExecuteNonQuery();
             }
         }
     }

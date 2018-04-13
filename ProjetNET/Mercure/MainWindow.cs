@@ -243,5 +243,12 @@ namespace ProjetNET
             Families.ShowDialog();
             LoadDatabase();
         }
+
+        private void subFamiliesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SubFamilies SubFamilies = new SubFamilies();
+            SubFamilies.ShowDialog();
+            LoadDatabase();
+        }
     }
 }

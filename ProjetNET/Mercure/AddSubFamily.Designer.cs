@@ -1,6 +1,6 @@
 ﻿namespace ProjetNET
 {
-    partial class AddFamily
+    partial class AddSubFamily
     {
         /// <summary>
         /// Required designer variable.
@@ -30,13 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // AddFamily
+            // AddSubFamily
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "AddFamily";
-            this.Text = "Family";
+            this.Name = "AddSubFamily";
+            this.Text = "SubFamily";
             this.ResumeLayout(false);
 
         }

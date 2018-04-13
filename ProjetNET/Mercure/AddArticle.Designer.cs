@@ -232,7 +232,7 @@
             this.ClientSize = new System.Drawing.Size(357, 193);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "AddArticle";
-            this.Text = "AddArticle";
+            this.Text = "Article";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
