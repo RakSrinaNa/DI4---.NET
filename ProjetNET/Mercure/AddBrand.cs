@@ -30,6 +30,39 @@ namespace ProjetNET
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
+
+            if (Brand != null)
+                SetBrand(Brand);
+            else
+                ID = -1;
         }
+
+        public Brand GetBrand()
+        {
+            Brand Brand = new Brand(ID, TextBoxName.Text);
+            return Brand;
+        }
+
+        public void SetBrand(Brand Brand)
+        {
+            TextBoxName.Text = Brand.Name;
+            ID = Brand.Reference;
+        }
+
+        private void ButtonOK_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            Brand Brand = GetBrand();
+            if (Brand != null)
+                DBConnect.GetInstance().UpdateOrCreateBrand(Brand);
+            this.Close();
+        }
+
+        private void ButtonCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private long ID;
     }
 }

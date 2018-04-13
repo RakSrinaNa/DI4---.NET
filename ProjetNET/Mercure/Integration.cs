@@ -39,20 +39,15 @@ namespace ProjetNET
             NewButton.Enabled = false;
             UpdateButton.Enabled = false;
             XmlDocument Doc = Parser.ParseXML(TextBox1.Text);
-            DBConnect.GetInstance().Clear();
             XmlNodeList NodeList = Doc.SelectNodes("/materiels/article");
             int Progress = 0;
             foreach (XmlNode Node in NodeList)
             {
-                int RefArticle = 0;
-                bool Parsed = int.TryParse(Node.Attributes.GetNamedItem("refArticle").Value, out RefArticle);
-                if (Parsed)
-                {
-                    if (DBConnect.GetInstance().ArticleExists(RefArticle))
-                        DBConnect.GetInstance().UpdateArticle(Node);
-                    else
-                        DBConnect.GetInstance().AddArticle(Node);
-                }
+                string RefArticle = Node.SelectSingleNode("refArticle").InnerText;
+                if (DBConnect.GetInstance().ArticleExists(RefArticle))
+                    DBConnect.GetInstance().UpdateArticle(Node);
+                else
+                    DBConnect.GetInstance().AddArticle(Node);
                 ProgressBar1.Value = (Progress * 100) / NodeList.Count;
                 Progress++;
             }

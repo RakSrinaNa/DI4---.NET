@@ -100,12 +100,7 @@ namespace ProjetNET
         {
             ComboBoxItem BrandItem = (ComboBoxItem)ComboBoxBrand.SelectedItem;
             ComboBoxItem SFItem = (ComboBoxItem)ComboBoxSubFamily.SelectedItem;
-            bool ok;
-            float Price;
-            ok = float.TryParse(TextBoxPrice.Text, out Price);
-            if (!ok)
-                return null;
-            Article Art = new Article(TextBoxReference.Text, TextBoxDescription.Text, SFItem.Value, BrandItem.Value, Price, 42);
+            Article Art = new Article(TextBoxReference.Text, TextBoxDescription.Text, SFItem.Value, BrandItem.Value, (double)NumericUpDownPrice.Value, (int)NumericUpDownQuantity.Value);
             return Art;
         }
 
@@ -129,12 +124,16 @@ namespace ProjetNET
             }
             TextBoxReference.Text = Art.Reference;
             TextBoxDescription.Text = Art.Description;
-            TextBoxPrice.Text = Art.Price.ToString();
+            NumericUpDownPrice.Value = (decimal)Art.Price;
+            NumericUpDownQuantity.Value = (decimal)Art.Quantity;
         }
 
         private void ButtonOK_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
+            Article Article = GetArticle();
+            if(Article != null)
+                DBConnect.GetInstance().UpdateOrCreateArticle(Article);
             this.Close();
         }
 

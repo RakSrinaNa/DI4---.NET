@@ -41,7 +41,7 @@ namespace ProjetNET
         {
             long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
-            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, 0)", Connection);
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, 1)", Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Article.SelectSingleNode("refArticle").InnerText);
             CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
             CommandInsert.Parameters.AddWithValue("@SF", SFRef);
@@ -49,7 +49,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
             if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new FieldAccessException("Inserting A failed");
+                throw new Exception("Inserting A failed");
         }
 
         public void UpdateArticle(XmlNode Article)
@@ -64,7 +64,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
             if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new FieldAccessException("Update A failed");
+                throw new Exception("Update A failed");
         }
 
         public long CreateSubFamily(String Name, long Famille)
@@ -85,7 +85,7 @@ namespace ProjetNET
             }
             else
             {
-                throw new FieldAccessException("Getting SF failed");
+                throw new Exception("Getting SF failed");
             }
 
             long ID = 0;
@@ -103,7 +103,7 @@ namespace ProjetNET
             }
             else
             {
-                throw new FieldAccessException("Getting SF failed");
+                throw new Exception("Getting SF failed");
             }
 
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO SousFamilles (RefSousFamille, RefFamille, Nom) VALUES (@ID, @RefF, @Name)", Connection);
@@ -112,7 +112,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@Name", Name);
 
             if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new FieldAccessException("Inserting SF failed");
+                throw new Exception("Inserting SF failed");
             return ID;
         }
 
@@ -139,7 +139,7 @@ namespace ProjetNET
             }
             else
             {
-                throw new FieldAccessException("Getting M failed");
+                throw new Exception("Getting M failed");
             }
 
             long ID = 0;
@@ -157,7 +157,7 @@ namespace ProjetNET
             }
             else
             {
-                throw new FieldAccessException("Getting M failed");
+                throw new Exception("Getting M failed");
             }
 
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Marques (RefMarque, Nom) VALUES (@ID, @Name)", Connection);
@@ -165,7 +165,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@Name", Name);
 
             if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new FieldAccessException("Inserting M failed");
+                throw new Exception("Inserting M failed");
             return ID;
         }
 
@@ -187,7 +187,7 @@ namespace ProjetNET
             }
             else
             {
-                throw new FieldAccessException("Getting F failed");
+                throw new Exception("Getting F failed");
             }
 
             long ID = 0;
@@ -205,7 +205,7 @@ namespace ProjetNET
             }
             else
             {
-                throw new FieldAccessException("Getting F failed");
+                throw new Exception("Getting F failed");
             }
 
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Familles (RefFamille, Nom) VALUES (@ID, @Name)", Connection);
@@ -213,7 +213,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@Name", Name);
 
             if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new FieldAccessException("Inserting F failed");
+                throw new Exception("Inserting F failed");
             return ID;
         }
 
@@ -227,7 +227,7 @@ namespace ProjetNET
             }
         }
 
-        public bool ArticleExists(int ID)
+        public bool ArticleExists(string ID)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefArticle FROM Articles WHERE RefArticle = @ID", Connection);
             CommandSelect.Parameters.AddWithValue("@ID", ID);
@@ -236,16 +236,12 @@ namespace ProjetNET
             if (Result != null)
             {
                 if (Result.Read())
-                {
-                    Object Obj = Result["RefArticle"];
-                    if (Obj != System.DBNull.Value)
-                        return Convert.ToInt64(Obj) != -1;
-                }
+                    return true;
                 Result.Close();
             }
             else
             {
-                throw new FieldAccessException("Getting A failed");
+                throw new Exception("Getting A failed");
             }
             return false;
         }
@@ -354,6 +350,62 @@ namespace ProjetNET
                     CommandDelete.Parameters.AddWithValue("@Ref", RefF);
                     CommandDelete.ExecuteNonQuery();
             }
+        }
+
+        public void UpdateOrCreateArticle(Article Article)
+        {
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, @Q)", Connection);
+            CommandInsert.Parameters.AddWithValue("@ID", Article.Reference);
+            CommandInsert.Parameters.AddWithValue("@Desc", Article.Description);
+            CommandInsert.Parameters.AddWithValue("@SF", Article.SubFamily);
+            CommandInsert.Parameters.AddWithValue("@M", Article.Brand);
+            CommandInsert.Parameters.AddWithValue("@PHT", Article.Price);
+            CommandInsert.Parameters.AddWithValue("@Q", Article.Quantity);
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new Exception("Inserting A failed");
+        }
+
+        public void UpdateOrCreateBrand(Brand Brand)
+        {
+            long ID = -1;
+            if (Brand.Reference == -1)
+            {
+                SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefMarque) AS ID FROM Marques", Connection);
+                SQLiteDataReader ResultID = CommandID.ExecuteReader();
+                if (ResultID != null)
+                {
+                    if (ResultID.Read())
+                    {
+                        Object Obj = ResultID["ID"];
+                        if (Obj != System.DBNull.Value)
+                            ID = Convert.ToInt64(Obj);
+                    }
+                    ResultID.Close();
+                    ID++;
+                }
+                else
+                    throw new Exception("Getting brand ID failed");
+            }
+            else
+                ID = Brand.Reference;
+
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO Marques (RefMarque, Nom) VALUES (@ID, @Name)", Connection);
+            CommandInsert.Parameters.AddWithValue("@ID", ID);
+            CommandInsert.Parameters.AddWithValue("@Name", Brand.Name);
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new Exception("Inserting M failed");
+        }
+
+        public void UpdateOrCreateFamily(Family Family)
+        {
+            throw new NotImplementedException("Not implemented");
+        }
+
+        public void UpdateOrCreateSubFamily(SubFamily SubFamily)
+        {
+            throw new NotImplementedException("Not implemented");
         }
     }
 }

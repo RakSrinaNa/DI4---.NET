@@ -105,7 +105,6 @@
       <DependentUpon>AddSubFamily.cs</DependentUpon>
     </Compile>
     <Compile Include="Article.cs" />
-    <Compile Include="Family.cs" />
     <Compile Include="Brand.cs" />
     <Compile Include="Brands.cs">
       <SubType>Form</SubType>
@@ -119,6 +118,7 @@
     <Compile Include="Families.Designer.cs">
       <DependentUpon>Families.cs</DependentUpon>
     </Compile>
+    <Compile Include="Family.cs" />
     <Compile Include="Integration.cs">
       <SubType>Form</SubType>
     </Compile>
