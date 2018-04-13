@@ -36,6 +36,8 @@ namespace ProjetNET
         {
             if (TextBox1.Text == "")
                 return;
+            NewButton.Enabled = false;
+            UpdateButton.Enabled = false;
             XmlDocument Doc = Parser.ParseXML(TextBox1.Text);
             DBConnect.GetInstance().Clear();
             XmlNodeList NodeList = Doc.SelectNodes("/materiels/article");
@@ -55,13 +57,15 @@ namespace ProjetNET
                 Progress++;
             }
             ProgressBar1.Value = 100;
-
+            Close();
         }
 
         private void NewButton_Click(object sender, EventArgs e)
         {
             if (TextBox1.Text == "")
                 return;
+            NewButton.Enabled = false;
+            UpdateButton.Enabled = false;
             XmlDocument Doc = Parser.ParseXML(TextBox1.Text);
             DBConnect.GetInstance().Clear();
             XmlNodeList NodeList = Doc.SelectNodes("/materiels/article");
@@ -73,6 +77,7 @@ namespace ProjetNET
                 Progress++;
             }
             ProgressBar1.Value = 100;
+            Close();
         }
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
