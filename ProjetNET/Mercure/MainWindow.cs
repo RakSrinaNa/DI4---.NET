@@ -40,7 +40,6 @@ namespace ProjetNET
             else if (e.Button == MouseButtons.Right)
             {
                 ContextMenu ContextMenu = new ContextMenu();
-               
 
                 if (listView1.SelectedItems.Count == 1)
                 {

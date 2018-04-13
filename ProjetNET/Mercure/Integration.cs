@@ -15,7 +15,7 @@ namespace ProjetNET
         public Integration()
         {
             InitializeComponent();
-            
+            StartPosition = FormStartPosition.CenterParent;
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)

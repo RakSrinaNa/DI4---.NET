@@ -32,6 +32,7 @@ namespace ProjetNET
 
         private void Construct(Article Article)
         {
+            StartPosition = FormStartPosition.CenterParent;
             this.DialogResult = DialogResult.Cancel;
 
             SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
