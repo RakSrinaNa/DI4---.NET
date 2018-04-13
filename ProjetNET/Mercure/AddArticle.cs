@@ -34,6 +34,9 @@ namespace ProjetNET
         {
             StartPosition = FormStartPosition.CenterParent;
             this.DialogResult = DialogResult.Cancel;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
 
             SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
             SQLiteCommand CommandSelectBrands = new SQLiteCommand("SELECT * FROM Marques", Connection);
