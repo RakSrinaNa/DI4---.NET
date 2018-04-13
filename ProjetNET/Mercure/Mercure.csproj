@@ -92,13 +92,26 @@
     <Compile Include="AddBrand.Designer.cs">
       <DependentUpon>AddBrand.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddFamily.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddFamily.Designer.cs">
+      <DependentUpon>AddFamily.cs</DependentUpon>
+    </Compile>
     <Compile Include="Article.cs" />
+    <Compile Include="Family.cs" />
     <Compile Include="Brand.cs" />
     <Compile Include="Brands.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Brands.Designer.cs">
       <DependentUpon>Brands.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Families.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Families.Designer.cs">
+      <DependentUpon>Families.cs</DependentUpon>
     </Compile>
     <Compile Include="Integration.cs">
       <SubType>Form</SubType>
@@ -121,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Brands.resx">
       <DependentUpon>Brands.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Families.resx">
+      <DependentUpon>Families.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Integration.resx">
       <DependentUpon>Integration.cs</DependentUpon>

@@ -9,21 +9,20 @@ using System.Windows.Forms;
 
 namespace ProjetNET
 {
-    public partial class AddBrand : Form
+    public partial class AddFamily : Form
     {
-        public AddBrand()
+        public AddFamily()
         {
             InitializeComponent();
             Construct(null);
         }
-
-        public AddBrand(Brand Brand)
+        public AddFamily(Family Family)
         {
             InitializeComponent();
-            Construct(Brand);
+            Construct(Family);
         }
 
-        private void Construct(Brand Brand)
+        private void Construct(Family Family)
         {
             StartPosition = FormStartPosition.CenterParent;
             this.DialogResult = DialogResult.Cancel;

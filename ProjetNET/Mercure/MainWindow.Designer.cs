@@ -96,6 +96,7 @@
             this.familiesToolStripMenuItem.Name = "familiesToolStripMenuItem";
             this.familiesToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.familiesToolStripMenuItem.Text = "Families";
+            this.familiesToolStripMenuItem.Click += new System.EventHandler(this.familiesToolStripMenuItem_Click);
             // 
             // subFamiliesToolStripMenuItem
             // 

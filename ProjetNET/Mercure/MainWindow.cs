@@ -236,5 +236,12 @@ namespace ProjetNET
             Brands.ShowDialog();
             LoadDatabase();
         }
+
+        private void familiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Families Families = new Families();
+            Families.ShowDialog();
+            LoadDatabase();
+        }
     }
 }

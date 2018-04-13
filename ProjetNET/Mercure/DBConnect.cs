@@ -265,5 +265,48 @@ namespace ProjetNET
                 CommandDelete.ExecuteNonQuery();
             }
         }
+
+        public void DeleteFamily(long Ref)
+        {
+            {
+                SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Familles WHERE RefFamille = @Ref", Connection);
+                CommandDelete.Parameters.AddWithValue("@Ref", Ref);
+                CommandDelete.ExecuteNonQuery();
+            }
+
+            LinkedList<long> SFToDel = new LinkedList<long>();
+            {
+                SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefSousFamille FROM SousFamilles WHERE RefFamille = @Ref", Connection);
+                CommandSelect.Parameters.AddWithValue("@Ref", Ref);
+
+                SQLiteDataReader Result = CommandSelect.ExecuteReader();
+                if (Result != null)
+                {
+                    while (Result.Read())
+                    {
+                        Object Obj = Result["RefSousFamille"];
+                        if (Obj != System.DBNull.Value)
+                        {
+                            SFToDel.AddLast(Convert.ToInt64(Obj));
+                        }
+                    }
+                    Result.Close();
+                }
+            }
+
+            foreach (long RefSF in SFToDel)
+            {
+                {
+                    SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM SousFamilles WHERE RefSousFamille = @Ref", Connection);
+                    CommandDelete.Parameters.AddWithValue("@Ref", RefSF);
+                    CommandDelete.ExecuteNonQuery();
+                }
+                {
+                    SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefSousFamille = @Ref", Connection);
+                    CommandDelete.Parameters.AddWithValue("@Ref", RefSF);
+                    CommandDelete.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
