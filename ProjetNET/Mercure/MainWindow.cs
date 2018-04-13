@@ -15,11 +15,20 @@ namespace ProjetNET
 {
     public partial class MainWindow : Form
     {
+        public static event BottomBarEventHandler BottomBarEvent;
+        public delegate void BottomBarEventHandler(String Text);
+
+        public static void ChangeStripText(String Text) 
+        {
+            BottomBarEvent?.Invoke(Text);
+        }
 
         public MainWindow()
         {
             this.FormClosing += MainWindow_FormClosing;
             InitializeComponent();
+
+            BottomBarEvent += (Text) => ToolStripStatusLabel1.Text = Text;
 
             listView1.FullRowSelect = true;
             listView1.MouseClick += new MouseEventHandler(OnClickArticle);

@@ -14,9 +14,7 @@ namespace ProjetNET
 
         public static DBConnect GetInstance()
         {
-            if(INSTANCE == null)
-                INSTANCE = new DBConnect();
-            return INSTANCE;
+            return INSTANCE ?? (INSTANCE = new DBConnect());
         }
 
         public SQLiteConnection GetConnection()
@@ -29,12 +27,14 @@ namespace ProjetNET
             Connection = new SQLiteConnection("Data Source=Mercure.SQLite;Version=3;");
             Connection.Open();
             Console.Out.WriteLine("DB Opened");
+            MainWindow.ChangeStripText("Connected to DB");
         }
 
         public void Close()
         {
             Connection.Close();
             Console.Out.WriteLine("DB Closed");
+            MainWindow.ChangeStripText("Disconnected from DB");
         }
 
         public void AddArticle(XmlNode Article)
