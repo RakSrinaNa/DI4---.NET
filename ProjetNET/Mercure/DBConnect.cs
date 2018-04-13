@@ -37,7 +37,7 @@ namespace ProjetNET
             MainWindow.ChangeStripText("Disconnected from DB");
         }
 
-        public void AddArticle(XmlNode Article)
+        public bool AddArticle(XmlNode Article)
         {
             long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
@@ -48,11 +48,10 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@M", CreateBrand(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
-            if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new Exception("Inserting A failed");
+            return CommandInsert.ExecuteNonQuery() == 1;
         }
 
-        public void UpdateArticle(XmlNode Article)
+        public bool UpdateArticle(XmlNode Article)
         {
             long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
@@ -63,8 +62,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@M", CreateBrand(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
-            if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new Exception("Update A failed");
+            return CommandInsert.ExecuteNonQuery() == 1;
         }
 
         public long CreateSubFamily(String Name, long Famille)
@@ -400,12 +398,67 @@ namespace ProjetNET
 
         public void UpdateOrCreateFamily(Family Family)
         {
-            throw new NotImplementedException("Not implemented");
+            long ID = -1;
+            if (Family.Reference == -1)
+            {
+                SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefFamily) AS ID FROM Familles", Connection);
+                SQLiteDataReader ResultID = CommandID.ExecuteReader();
+                if (ResultID != null)
+                {
+                    if (ResultID.Read())
+                    {
+                        Object Obj = ResultID["ID"];
+                        if (Obj != System.DBNull.Value)
+                            ID = Convert.ToInt64(Obj);
+                    }
+                    ResultID.Close();
+                    ID++;
+                }
+                else
+                    throw new Exception("Getting family ID failed");
+            }
+            else
+                ID = Family.Reference;
+
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO Familles (RefFamille, Nom) VALUES (@ID, @Name)", Connection);
+            CommandInsert.Parameters.AddWithValue("@ID", ID);
+            CommandInsert.Parameters.AddWithValue("@Name", Family.Name);
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new Exception("Inserting F failed");
         }
 
         public void UpdateOrCreateSubFamily(SubFamily SubFamily)
         {
-            throw new NotImplementedException("Not implemented");
+            long ID = -1;
+            if (SubFamily.Reference == -1)
+            {
+                SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefSousFamily) AS ID FROM SousFamilles", Connection);
+                SQLiteDataReader ResultID = CommandID.ExecuteReader();
+                if (ResultID != null)
+                {
+                    if (ResultID.Read())
+                    {
+                        Object Obj = ResultID["ID"];
+                        if (Obj != System.DBNull.Value)
+                            ID = Convert.ToInt64(Obj);
+                    }
+                    ResultID.Close();
+                    ID++;
+                }
+                else
+                    throw new Exception("Getting subfamily ID failed");
+            }
+            else
+                ID = SubFamily.Reference;
+
+            SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO SousFamilles (RefSousFamille, RefFamille, Nom) VALUES (@ID, @IDFamille, @Name)", Connection);
+            CommandInsert.Parameters.AddWithValue("@ID", ID);
+            CommandInsert.Parameters.AddWithValue("@IDFamille", SubFamily.FamilyReference);
+            CommandInsert.Parameters.AddWithValue("@Name", SubFamily.Name);
+
+            if (CommandInsert.ExecuteNonQuery() != 1)
+                throw new Exception("Inserting SF failed");
         }
     }
 }

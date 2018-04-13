@@ -89,21 +89,21 @@
             this.brandsToolStripMenuItem.Name = "brandsToolStripMenuItem";
             this.brandsToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.brandsToolStripMenuItem.Text = "Brands";
-            this.brandsToolStripMenuItem.Click += new System.EventHandler(this.brandsToolStripMenuItem_Click);
+            this.brandsToolStripMenuItem.Click += new System.EventHandler(this.BrandsToolStripMenuItem_Click);
             // 
             // familiesToolStripMenuItem
             // 
             this.familiesToolStripMenuItem.Name = "familiesToolStripMenuItem";
             this.familiesToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.familiesToolStripMenuItem.Text = "Families";
-            this.familiesToolStripMenuItem.Click += new System.EventHandler(this.familiesToolStripMenuItem_Click);
+            this.familiesToolStripMenuItem.Click += new System.EventHandler(this.FamiliesToolStripMenuItem_Click);
             // 
             // subFamiliesToolStripMenuItem
             // 
             this.subFamiliesToolStripMenuItem.Name = "subFamiliesToolStripMenuItem";
             this.subFamiliesToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
             this.subFamiliesToolStripMenuItem.Text = "Sub Families";
-            this.subFamiliesToolStripMenuItem.Click += new System.EventHandler(this.subFamiliesToolStripMenuItem_Click);
+            this.subFamiliesToolStripMenuItem.Click += new System.EventHandler(this.SubFamiliesToolStripMenuItem_Click);
             // 
             // listView1
             // 

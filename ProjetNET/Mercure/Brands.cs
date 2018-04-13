@@ -94,11 +94,14 @@ namespace ProjetNET
                 ListViewItem ListItem = new ListViewItem(Dr["RefMarque"].ToString());
                 ListItem.SubItems.Add(Dr["Nom"].ToString());
                 ListItem.Tag = new Brand(
-                    Convert.ToInt64(Dr["Refmarque"].ToString()),
+                    Convert.ToInt64(Dr["RefMarque"].ToString()),
                     Dr["Nom"].ToString()
                 );
                 listView1.Items.Add(ListItem);
             }
+
+            listView1.Columns[0].Width = -2;
+            listView1.Columns[1].Width = -2;
 
             Adapter.Dispose();
         }
@@ -190,8 +193,8 @@ namespace ProjetNET
         private void UpdateBrand(Brand Brand)
         {
             AddBrand AddBrand = new AddBrand(Brand);
-            AddBrand.ShowDialog();
-            LoadDatabase();
+            if (AddBrand.ShowDialog() == DialogResult.OK)
+                LoadDatabase();
         }
     }
 }

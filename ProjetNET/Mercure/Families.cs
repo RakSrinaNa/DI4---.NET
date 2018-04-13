@@ -100,6 +100,9 @@ namespace ProjetNET
                 listView1.Items.Add(ListItem);
             }
 
+            listView1.Columns[0].Width = -2;
+            listView1.Columns[1].Width = -2;
+
             Adapter.Dispose();
         }
 
@@ -190,8 +193,8 @@ namespace ProjetNET
         private void UpdateFamily(Family Family)
         {
             AddFamily AddFamily = new AddFamily(Family);
-            AddFamily.ShowDialog();
-            LoadDatabase();
+            if (AddFamily.ShowDialog() == DialogResult.OK)
+                LoadDatabase();
         }
     }
 }

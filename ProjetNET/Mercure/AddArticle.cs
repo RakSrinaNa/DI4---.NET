@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Text.RegularExpressions;
 
 namespace ProjetNET
 {
@@ -130,8 +131,14 @@ namespace ProjetNET
 
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
             Article Article = GetArticle();
+            if (!Regex.IsMatch(Article.Reference, @"^F[0-9]{7}$"))
+            {
+                System.Windows.Forms.MessageBox.Show("Wrong reference");
+                return;
+            }
+            this.DialogResult = DialogResult.OK;
+            
             if(Article != null)
                 DBConnect.GetInstance().UpdateOrCreateArticle(Article);
             this.Close();
