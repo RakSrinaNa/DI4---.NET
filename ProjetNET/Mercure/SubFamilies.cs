@@ -114,6 +114,10 @@ namespace ProjetNET
                 listView1.Groups.Clear();
             }
 
+            listView1.Columns[0].Width = -2;
+            listView1.Columns[1].Width = -2;
+            listView1.Columns[2].Width = -2;
+
             if (SortColumn == 0 || SortColumn == 2)
             {
                 listView1.ShowGroups = false;
@@ -239,8 +243,8 @@ namespace ProjetNET
         private void UpdateSubFamily(SubFamily SubFamily)
         {
             AddSubFamily AddSubFamily = new AddSubFamily(SubFamily);
-            AddSubFamily.ShowDialog();
-            LoadDatabase();
+            if (AddSubFamily.ShowDialog() == DialogResult.OK)
+                LoadDatabase();
         }
     }
 }

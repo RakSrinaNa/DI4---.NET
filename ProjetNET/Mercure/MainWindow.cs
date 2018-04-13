@@ -33,9 +33,12 @@ namespace ProjetNET
             BottomBarEvent += (Text) => ToolStripStatusLabel1.Text = Text;
 
             listView1.FullRowSelect = true;
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listView1.MouseClick += new MouseEventHandler(OnClickArticle);
 
             LoadDatabase();
+
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void OnClickArticle(object sender, MouseEventArgs e)
@@ -141,6 +144,14 @@ namespace ProjetNET
                 listView1.Groups.Clear();
             }
 
+            listView1.Columns[0].Width = -2;
+            listView1.Columns[1].Width = -2;
+            listView1.Columns[2].Width = -2;
+            listView1.Columns[3].Width = -2;
+            listView1.Columns[4].Width = -2;
+            listView1.Columns[5].Width = -2;
+            listView1.Columns[6].Width = -2;
+
             if (SortColumn == 0 || SortColumn == 1)
             {
                 listView1.ShowGroups = false;
@@ -204,8 +215,8 @@ namespace ProjetNET
         private void UpdateArticle(Article article)
         {
             AddArticle AddArticle = new AddArticle(article);
-            AddArticle.ShowDialog();
-            LoadDatabase();
+            if(AddArticle.ShowDialog() == DialogResult.OK)
+                LoadDatabase();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)

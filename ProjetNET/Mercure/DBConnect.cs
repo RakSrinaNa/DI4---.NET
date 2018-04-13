@@ -37,7 +37,7 @@ namespace ProjetNET
             MainWindow.ChangeStripText("Disconnected from DB");
         }
 
-        public void AddArticle(XmlNode Article)
+        public bool AddArticle(XmlNode Article)
         {
             long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
@@ -48,11 +48,10 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@M", CreateBrand(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
-            if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new Exception("Inserting A failed");
+            return CommandInsert.ExecuteNonQuery() == 1;
         }
 
-        public void UpdateArticle(XmlNode Article)
+        public bool UpdateArticle(XmlNode Article)
         {
             long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
 
@@ -63,8 +62,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@M", CreateBrand(Article.SelectSingleNode("marque").InnerText));
             CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
-            if (CommandInsert.ExecuteNonQuery() != 1)
-                throw new Exception("Update A failed");
+            return CommandInsert.ExecuteNonQuery() == 1;
         }
 
         public long CreateSubFamily(String Name, long Famille)
