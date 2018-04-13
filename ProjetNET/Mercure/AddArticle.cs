@@ -65,7 +65,7 @@ namespace ProjetNET
             {
                 throw new FieldAccessException("Getting brands failed");
             }
-            SQLiteCommand CommandSelectSF = new SQLiteCommand("SELECT * FROM SousFamilles", Connection);
+            SQLiteCommand CommandSelectSF = new SQLiteCommand("SELECT * FROM SousFamilles ORDER BY RefFamille", Connection);
             SQLiteDataReader ResultSF = CommandSelectSF.ExecuteReader();
             if (ResultSF != null)
             {
