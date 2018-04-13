@@ -34,6 +34,9 @@
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectionXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.brandsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.familiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.subFamiliesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainStatusStrip.SuspendLayout();
             this.MyMainMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +59,10 @@
             // MyMainMenuStrip
             // 
             this.MyMainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileToolStripMenuItem});
+            this.FileToolStripMenuItem,
+            this.brandsToolStripMenuItem,
+            this.familiesToolStripMenuItem,
+            this.subFamiliesToolStripMenuItem});
             this.MyMainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MyMainMenuStrip.Name = "MyMainMenuStrip";
             this.MyMainMenuStrip.Size = new System.Drawing.Size(506, 24);
@@ -80,12 +86,33 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Location = new System.Drawing.Point(12, 27);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(482, 355);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // brandsToolStripMenuItem
+            // 
+            this.brandsToolStripMenuItem.Name = "brandsToolStripMenuItem";
+            this.brandsToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.brandsToolStripMenuItem.Text = "Brands";
+            // 
+            // familiesToolStripMenuItem
+            // 
+            this.familiesToolStripMenuItem.Name = "familiesToolStripMenuItem";
+            this.familiesToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.familiesToolStripMenuItem.Text = "Families";
+            // 
+            // subFamiliesToolStripMenuItem
+            // 
+            this.subFamiliesToolStripMenuItem.Name = "subFamiliesToolStripMenuItem";
+            this.subFamiliesToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
+            this.subFamiliesToolStripMenuItem.Text = "Sub Families";
             // 
             // MainWindow
             // 
@@ -115,6 +142,9 @@
         private System.Windows.Forms.ToolStripMenuItem SelectionXMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel ToolStripStatusLabel1;
         private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ToolStripMenuItem brandsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem familiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem subFamiliesToolStripMenuItem;
     }
 }
 
