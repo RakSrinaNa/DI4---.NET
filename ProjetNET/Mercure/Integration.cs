@@ -16,6 +16,9 @@ namespace ProjetNET
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterParent;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)
