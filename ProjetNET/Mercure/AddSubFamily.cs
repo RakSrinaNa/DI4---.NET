@@ -15,6 +15,10 @@ namespace ProjetNET
     /// </summary>
     public partial class AddSubFamily : Form
     {
+        /// <summary>
+        /// Represents an item with a hidden value in a combobox
+        /// For use when an ID is needed (Sub family and brand select)
+        /// </summary>
         private class ComboBoxItem
         {
             public string Name { get; set; }
@@ -53,6 +57,7 @@ namespace ProjetNET
             MaximizeBox = false;
             MinimizeBox = false;
 
+            // Filling the combobox
             SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
             SQLiteCommand CommandSelectBrands = new SQLiteCommand("SELECT * FROM Familles", Connection);
             SQLiteDataReader ResultFamilies = CommandSelectBrands.ExecuteReader();
@@ -87,6 +92,10 @@ namespace ProjetNET
                 ID = -1;
         }
 
+        /// <summary>
+        /// Return the subfamily created (or edited) by the window
+        /// </summary>
+        /// <returns>The new subfamily</returns>
         public SubFamily GetSubFamily()
         {
             ComboBoxItem FamilyItem = (ComboBoxItem)ComboBoxFamily.SelectedItem;
@@ -94,6 +103,10 @@ namespace ProjetNET
             return SubFamily;
         }
 
+        /// <summary>
+        /// Edit the given subfamily with the new data
+        /// </summary>
+        /// <param name="SubFamily">The subfamily to edit</param>
         public void SetSubFamily(SubFamily SubFamily)
         {
             for (int BrandIndex = 0; BrandIndex < ComboBoxFamily.Items.Count; BrandIndex++)
@@ -108,6 +121,11 @@ namespace ProjetNET
             ID = SubFamily.Reference;
         }
 
+        /// <summary>
+        /// Validate the creation (or editing)
+        /// </summary>
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
@@ -117,6 +135,11 @@ namespace ProjetNET
             this.Close();
         }
 
+        /// <summary>
+        /// Close the window without saving the changes
+        /// </summary>
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
             this.Close();

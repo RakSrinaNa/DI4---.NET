@@ -55,6 +55,7 @@ namespace ProjetNET
             MaximizeBox = false;
             MinimizeBox = false;
 
+            //Filling the comboboxes
             SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
             SQLiteCommand CommandSelectBrands = new SQLiteCommand("SELECT * FROM Marques", Connection);
             SQLiteDataReader ResultBrands = CommandSelectBrands.ExecuteReader();

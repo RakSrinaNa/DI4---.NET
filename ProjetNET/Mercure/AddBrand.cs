@@ -5,7 +5,7 @@ namespace ProjetNET
 {
     /// <inheritdoc />
     /// <summary>
-    /// indow to enter the data of a brand
+    /// Window to enter the data of a brand
     /// </summary>
     public partial class AddBrand : Form
     {
