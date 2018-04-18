@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
 namespace ProjetNET
 {
+    /// <inheritdoc />
     /// <summary>
     /// Window to enter the data of a subfamily
     /// </summary>
@@ -26,6 +21,7 @@ namespace ProjetNET
             public override string ToString() { return Name; }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Initialize an empty window to add a subfamily
         /// </summary>
@@ -35,6 +31,7 @@ namespace ProjetNET
             Construct(null);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Initialize a window to modify the given subfamily
         /// </summary>
@@ -52,7 +49,7 @@ namespace ProjetNET
         private void Construct(SubFamily SubFamily)
         {
             StartPosition = FormStartPosition.CenterParent;
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -65,15 +62,15 @@ namespace ProjetNET
             {
                 while (ResultFamilies.Read())
                 {
-                    Object ObjId = ResultFamilies["RefFamille"];
+                    object ObjId = ResultFamilies["RefFamille"];
                     long BrandId = 0;
-                    if (ObjId != System.DBNull.Value)
+                    if (ObjId != DBNull.Value)
                     {
                         BrandId = Convert.ToInt64(ObjId);
                     }
-                    Object ObjName = ResultFamilies["Nom"];
+                    object ObjName = ResultFamilies["Nom"];
                     string BrandName = "";
-                    if (ObjName != System.DBNull.Value)
+                    if (ObjName != DBNull.Value)
                     {
                         BrandName = Convert.ToString(ObjName);
                     }
@@ -89,7 +86,7 @@ namespace ProjetNET
             if (SubFamily != null)
                 SetSubFamily(SubFamily);
             else
-                ID = -1;
+                _Id = -1;
         }
 
         /// <summary>
@@ -99,7 +96,7 @@ namespace ProjetNET
         public SubFamily GetSubFamily()
         {
             ComboBoxItem FamilyItem = (ComboBoxItem)ComboBoxFamily.SelectedItem;
-            SubFamily SubFamily = new SubFamily(ID, FamilyItem.Value, TextBoxName.Text);
+            SubFamily SubFamily = new SubFamily(_Id, FamilyItem.Value, TextBoxName.Text);
             return SubFamily;
         }
 
@@ -118,7 +115,7 @@ namespace ProjetNET
                 }
             }
             TextBoxName.Text = SubFamily.Name;
-            ID = SubFamily.Reference;
+            _Id = SubFamily.Reference;
         }
 
         /// <summary>
@@ -128,11 +125,11 @@ namespace ProjetNET
         /// <param name="Event">The event</param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
             SubFamily SubFamily = GetSubFamily();
             if (SubFamily != null)
                 DBConnect.GetInstance().UpdateOrCreateSubFamily(SubFamily);
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -142,9 +139,9 @@ namespace ProjetNET
         /// <param name="Event">The event</param>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private long ID;
+        private long _Id;
     }
 }
