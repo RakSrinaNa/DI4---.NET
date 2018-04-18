@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
 
 namespace ProjetNET
 {
+    /// <inheritdoc />
     /// <summary>
     /// Window to enter the data of an article
     /// </summary>
     public partial class AddArticle : Form
     {
         /// <summary>
-        /// TODO
+        /// TODO: Clément
         /// </summary>
         private class ComboBoxItem
         {
@@ -26,6 +21,7 @@ namespace ProjetNET
             public override string ToString() { return Name; }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Initialize an empty window to add an article
         /// </summary>
@@ -35,10 +31,11 @@ namespace ProjetNET
             Construct(null);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Initialize a window to modify the given article
         /// </summary>
-        /// <param name="Article">The article to edit</param>
+        /// <param name="Article">The article to edit. If null, no article will be loaded.</param>
         public AddArticle(Article Article)
         {
             InitializeComponent();
@@ -52,7 +49,7 @@ namespace ProjetNET
         private void Construct(Article Article)
         {
             StartPosition = FormStartPosition.CenterParent;
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -64,15 +61,15 @@ namespace ProjetNET
             {
                 while (ResultBrands.Read())
                 {
-                    Object ObjId = ResultBrands["RefMarque"];
+                    object ObjId = ResultBrands["RefMarque"];
                     long BrandId = 0;
-                    if (ObjId != System.DBNull.Value)
+                    if (ObjId != DBNull.Value)
                     {
                         BrandId = Convert.ToInt64(ObjId);
                     }
-                    Object ObjName = ResultBrands["Nom"];
+                    object ObjName = ResultBrands["Nom"];
                     string BrandName = "";
-                    if (ObjName != System.DBNull.Value)
+                    if (ObjName != DBNull.Value)
                     {
                         BrandName = Convert.ToString(ObjName);
                     }
@@ -84,27 +81,27 @@ namespace ProjetNET
             {
                 throw new FieldAccessException("Getting brands failed");
             }
-            SQLiteCommand CommandSelectSF = new SQLiteCommand("SELECT * FROM SousFamilles ORDER BY RefFamille", Connection);
-            SQLiteDataReader ResultSF = CommandSelectSF.ExecuteReader();
-            if (ResultSF != null)
+            SQLiteCommand CommandSelectSf = new SQLiteCommand("SELECT * FROM SousFamilles ORDER BY RefFamille", Connection);
+            SQLiteDataReader ResultSf = CommandSelectSf.ExecuteReader();
+            if (ResultSf != null)
             {
-                while (ResultSF.Read())
+                while (ResultSf.Read())
                 {
-                    Object ObjId = ResultSF["RefSousFamille"];
-                    long SFId = 0;
-                    if (ObjId != System.DBNull.Value)
+                    object ObjId = ResultSf["RefSousFamille"];
+                    long SfId = 0;
+                    if (ObjId != DBNull.Value)
                     {
-                        SFId = Convert.ToInt64(ObjId);
+                        SfId = Convert.ToInt64(ObjId);
                     }
-                    Object ObjName = ResultSF["Nom"];
-                    string SFName = "";
-                    if (ObjName != System.DBNull.Value)
+                    object ObjName = ResultSf["Nom"];
+                    string SfName = "";
+                    if (ObjName != DBNull.Value)
                     {
-                        SFName = Convert.ToString(ObjName);
+                        SfName = Convert.ToString(ObjName);
                     }
-                    ComboBoxSubFamily.Items.Add(new ComboBoxItem { Name = SFName, Value = SFId });
+                    ComboBoxSubFamily.Items.Add(new ComboBoxItem { Name = SfName, Value = SfId });
                 }
-                ResultSF.Close();
+                ResultSf.Close();
             }
             else
             {
@@ -122,8 +119,8 @@ namespace ProjetNET
         public Article GetArticle()
         {
             ComboBoxItem BrandItem = (ComboBoxItem)ComboBoxBrand.SelectedItem;
-            ComboBoxItem SFItem = (ComboBoxItem)ComboBoxSubFamily.SelectedItem;
-            Article Art = new Article(TextBoxReference.Text, TextBoxDescription.Text, SFItem.Value, BrandItem.Value, (double)NumericUpDownPrice.Value, (int)NumericUpDownQuantity.Value);
+            ComboBoxItem SfItem = (ComboBoxItem)ComboBoxSubFamily.SelectedItem;
+            Article Art = new Article(TextBoxReference.Text, TextBoxDescription.Text, SfItem.Value, BrandItem.Value, (double)NumericUpDownPrice.Value, (int)NumericUpDownQuantity.Value);
             return Art;
         }
 
@@ -141,48 +138,48 @@ namespace ProjetNET
                     break;
                 }
             }
-            for (int SFIndex = 0; SFIndex < ComboBoxSubFamily.Items.Count; SFIndex++)
+            for (int SfIndex = 0; SfIndex < ComboBoxSubFamily.Items.Count; SfIndex++)
             {
-                if (((ComboBoxItem)(ComboBoxSubFamily.Items[SFIndex])).Value == Art.SubFamily)
+                if (((ComboBoxItem)(ComboBoxSubFamily.Items[SfIndex])).Value == Art.SubFamily)
                 {
-                    ComboBoxSubFamily.SelectedIndex = SFIndex;
+                    ComboBoxSubFamily.SelectedIndex = SfIndex;
                     break;
                 }
             }
             TextBoxReference.Text = Art.Reference;
             TextBoxDescription.Text = Art.Description;
             NumericUpDownPrice.Value = (decimal)Art.Price;
-            NumericUpDownQuantity.Value = (decimal)Art.Quantity;
+            NumericUpDownQuantity.Value = Art.Quantity;
         }
 
         /// <summary>
         /// Validate the creation (or editing)
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void ButtonOK_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void ButtonOK_Click(object Sender, EventArgs Event)
         {
             Article Article = GetArticle();
             if (!Regex.IsMatch(Article.Reference, @"^F[0-9]{7}$"))
             {
-                System.Windows.Forms.MessageBox.Show("Wrong reference");
+                MessageBox.Show(@"Wrong reference");
                 return;
             }
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
             
             if(Article != null)
                 DBConnect.GetInstance().UpdateOrCreateArticle(Article);
-            this.Close();
+            Close();
         }
 
         /// <summary>
         /// Close the window without saving the changes
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void ButtonCancel_Click(object Sender, EventArgs Event)
         {
-            this.Close();
+            Close();
         }
     }
 }
