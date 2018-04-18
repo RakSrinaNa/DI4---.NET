@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Windows.Forms;
 
 namespace ProjetNET
 {
+    /// <inheritdoc />
     /// <summary>
     /// Window to import XML file data in the database
     /// </summary>
     public partial class Integration : Form
     {
+        /// <inheritdoc />
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -30,14 +26,14 @@ namespace ProjetNET
         /// <summary>
         /// Open a browser to select a file
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void BrowseButton_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void BrowseButton_Click(object Sender, EventArgs Event)
         {
             OpenFileDialog MyFileDialog = new OpenFileDialog();
-            MyFileDialog.Filter = "XML Files|*.xml";
-            DialogResult HasClickedOK = MyFileDialog.ShowDialog();
-            if (HasClickedOK == DialogResult.OK)
+            MyFileDialog.Filter = @"XML Files|*.xml";
+            DialogResult HasClickedOk = MyFileDialog.ShowDialog();
+            if (HasClickedOk == DialogResult.OK)
             {
                 TextBox1.Text = MyFileDialog.FileName;
             }
@@ -46,9 +42,9 @@ namespace ProjetNET
         /// <summary>
         /// Update the database from the selected file
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void UpdateButton_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void UpdateButton_Click(object Sender, EventArgs Event)
         {
             if (TextBox1.Text == "")
                 return;
@@ -64,39 +60,39 @@ namespace ProjetNET
                 string RefArticle = Node.SelectSingleNode("refArticle").InnerText;
                 try
                 {
-                    if (DBConnect.GetInstance().ArticleExists(RefArticle))
+                    if (DbConnect.GetInstance().ArticleExists(RefArticle))
                     {
-                        if (DBConnect.GetInstance().UpdateArticle(Node))
+                        if (DbConnect.GetInstance().UpdateArticle(Node))
                             Updated++;
                     }
-                    else if(DBConnect.GetInstance().AddArticle(Node))
+                    else if(DbConnect.GetInstance().AddArticle(Node))
                         Added++;
                 }
                 catch (Exception E)
                 {
-                    System.Windows.Forms.MessageBox.Show("Error " + E.Message);
+                    MessageBox.Show(@"Error " + E.Message);
                 }
                 ProgressBar1.Value = (Progress * 100) / NodeList.Count;
                 Progress++;
             }
             ProgressBar1.Value = 100;
             Close();
-            System.Windows.Forms.MessageBox.Show("Updated " + Updated + " elements and created " + Added + " elements");
+            MessageBox.Show(@"Updated " + Updated + @" elements and created " + Added + @" elements");
         }
 
         /// <summary>
         /// Erase and reload the database from the selected file
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void NewButton_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void NewButton_Click(object Sender, EventArgs Event)
         {
             if (TextBox1.Text == "")
                 return;
             NewButton.Enabled = false;
             UpdateButton.Enabled = false;
             XmlDocument Doc = Parser.ParseXML(TextBox1.Text);
-            DBConnect.GetInstance().Clear();
+            DbConnect.GetInstance().Clear();
             XmlNodeList NodeList = Doc.SelectNodes("/materiels/article");
             int Added = 0;
             int Progress = 0;
@@ -104,24 +100,19 @@ namespace ProjetNET
             {
                 try
                 {
-                    if (DBConnect.GetInstance().AddArticle(Node))
+                    if (DbConnect.GetInstance().AddArticle(Node))
                         Added++;
                 }
                 catch (Exception E)
                 {
-                    System.Windows.Forms.MessageBox.Show("Error " + E.Message);
+                    MessageBox.Show(@"Error " + E.Message);
                 }
                 ProgressBar1.Value = (Progress * 100) / NodeList.Count;
                 Progress++;
             }
             ProgressBar1.Value = 100;
             Close();
-            System.Windows.Forms.MessageBox.Show("Added " + Added + " elements");
-        }
-
-        private void TextBox1_TextChanged(object sender, EventArgs e)
-        {
-
+            MessageBox.Show(@"Added " + Added + @" elements");
         }
     }
 }

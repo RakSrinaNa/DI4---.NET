@@ -103,7 +103,6 @@
             this.TextBox1.Name = "TextBox1";
             this.TextBox1.Size = new System.Drawing.Size(341, 20);
             this.TextBox1.TabIndex = 1;
-            this.TextBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // TableLayoutPanel3
             // 
