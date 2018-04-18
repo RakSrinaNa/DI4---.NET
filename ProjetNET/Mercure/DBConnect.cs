@@ -318,16 +318,23 @@ namespace ProjetNET
         /// <param name="Ref">The reference</param>
         public void DeleteBrand(long Ref)
         {
+            var Transaction = Connection.BeginTransaction();
             {
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefMarque = @Ref", Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
-                CommandDelete.ExecuteNonQuery();
+                int Modified = CommandDelete.ExecuteNonQuery();
+                if (Modified > 0)
+                {
+                    Transaction.Rollback();
+                    return;
+                }
             }
             {
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Marques WHERE RefMarque = @Ref", Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
                 CommandDelete.ExecuteNonQuery();
             }
+            Transaction.Commit();
         }
 
         /// <summary>
@@ -336,6 +343,7 @@ namespace ProjetNET
         /// <param name="Ref">The reference</param>
         public void DeleteFamily(long Ref)
         {
+            var Transaction = Connection.BeginTransaction();
             {
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Familles WHERE RefFamille = @Ref", Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
@@ -362,6 +370,11 @@ namespace ProjetNET
                 }
             }
 
+            if (SFToDel.Count > 0)
+            {
+                Transaction.Rollback();
+                return;
+            }
             foreach (long RefSF in SFToDel)
             {
                 {
@@ -375,6 +388,7 @@ namespace ProjetNET
                     CommandDelete.ExecuteNonQuery();
                 }
             }
+            Transaction.Commit();
         }
 
         /// <summary>
@@ -383,6 +397,7 @@ namespace ProjetNET
         /// <param name="Ref">The reference</param>
         public void DeleteSubFamily(long Ref)
         {
+            var Transaction = Connection.BeginTransaction();
             {
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM SousFamilles WHERE RefSousFamille = @Ref", Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
@@ -392,7 +407,12 @@ namespace ProjetNET
             {
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefSousFamille = @Ref", Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
-                CommandDelete.ExecuteNonQuery();
+                int Modified = CommandDelete.ExecuteNonQuery();
+                if (Modified > 0)
+                {
+                    Transaction.Rollback();
+                    return;
+                }
             }
 
             LinkedList<long> FToDel = new LinkedList<long>();
@@ -414,6 +434,11 @@ namespace ProjetNET
                     Result.Close();
                 }
             }
+            if (FToDel.Count > 0)
+            {
+                Transaction.Rollback();
+                return;
+            }
 
             foreach (long RefF in FToDel)
             {
@@ -421,6 +446,8 @@ namespace ProjetNET
                     CommandDelete.Parameters.AddWithValue("@Ref", RefF);
                     CommandDelete.ExecuteNonQuery();
             }
+
+            Transaction.Commit();
         }
 
         /// <summary>
