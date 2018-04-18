@@ -50,7 +50,7 @@ namespace ProjetNET
                 return;
             NewButton.Enabled = false;
             UpdateButton.Enabled = false;
-            XmlDocument Doc = Parser.ParseXML(TextBox1.Text);
+            XmlDocument Doc = Parser.ParseXml(TextBox1.Text);
             XmlNodeList NodeList = Doc.SelectNodes("/materiels/article");
             int Updated = 0;
             int Added = 0;
@@ -91,7 +91,7 @@ namespace ProjetNET
                 return;
             NewButton.Enabled = false;
             UpdateButton.Enabled = false;
-            XmlDocument Doc = Parser.ParseXML(TextBox1.Text);
+            XmlDocument Doc = Parser.ParseXml(TextBox1.Text);
             DbConnect.GetInstance().Clear();
             XmlNodeList NodeList = Doc.SelectNodes("/materiels/article");
             int Added = 0;

@@ -56,7 +56,7 @@ namespace ProjetNET
                     MenuItem MenuDel = new MenuItem("Delete brand");
                     MenuDel.Click += (Sender2, Event2) =>
                     {
-                        DBConnect.GetInstance().DeleteBrand(((Brand) Item.Tag).Reference);
+                        DbConnect.GetInstance().DeleteBrand(((Brand) Item.Tag).Reference);
                         LoadDatabase();
                     };
 
@@ -81,7 +81,7 @@ namespace ProjetNET
             listView1.Columns.Clear();
             listView1.Items.Clear();
             SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT RefMarque, Nom FROM Marques",
-                DBConnect.GetInstance().GetConnection());
+                DbConnect.GetInstance().GetConnection());
             DataTable Dt = new DataTable();
             Adapter.Fill(Dt);
 
@@ -225,7 +225,7 @@ namespace ProjetNET
                     for (int I = 0; I < listView1.SelectedItems.Count; I++)
                     {
                         ListViewItem Item = listView1.SelectedItems[I];
-                        DBConnect.GetInstance().DeleteBrand(((Brand) Item.Tag).Reference);
+                        DbConnect.GetInstance().DeleteBrand(((Brand) Item.Tag).Reference);
                     }
 
                     LoadDatabase();
