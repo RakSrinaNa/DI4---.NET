@@ -78,7 +78,7 @@ namespace ProjetNET
             DialogResult = DialogResult.OK;
             Brand Brand = GetBrand();
             if (Brand != null)
-                DBConnect.GetInstance().UpdateOrCreateBrand(Brand);
+                DbConnect.GetInstance().UpdateOrCreateBrand(Brand);
             Close();
         }
 

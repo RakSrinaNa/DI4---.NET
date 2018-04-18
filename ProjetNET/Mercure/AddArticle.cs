@@ -56,7 +56,7 @@ namespace ProjetNET
             MinimizeBox = false;
 
             //Filling the comboboxes
-            SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
+            SQLiteConnection Connection = DbConnect.GetInstance().GetConnection();
             SQLiteCommand CommandSelectBrands = new SQLiteCommand("SELECT * FROM Marques", Connection);
             SQLiteDataReader ResultBrands = CommandSelectBrands.ExecuteReader();
             if (ResultBrands != null)
@@ -170,7 +170,7 @@ namespace ProjetNET
             DialogResult = DialogResult.OK;
             
             if(Article != null)
-                DBConnect.GetInstance().UpdateOrCreateArticle(Article);
+                DbConnect.GetInstance().UpdateOrCreateArticle(Article);
             Close();
         }
 

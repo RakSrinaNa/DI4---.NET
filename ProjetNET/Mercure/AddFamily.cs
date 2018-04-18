@@ -78,7 +78,7 @@ namespace ProjetNET
             DialogResult = DialogResult.OK;
             Family Family = GetFamily();
             if (Family != null)
-                DBConnect.GetInstance().UpdateOrCreateFamily(Family);
+                DbConnect.GetInstance().UpdateOrCreateFamily(Family);
             Close();
         }
 

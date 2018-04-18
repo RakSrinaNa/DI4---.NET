@@ -55,7 +55,7 @@ namespace ProjetNET
             MinimizeBox = false;
 
             // Filling the combobox
-            SQLiteConnection Connection = DBConnect.GetInstance().GetConnection();
+            SQLiteConnection Connection = DbConnect.GetInstance().GetConnection();
             SQLiteCommand CommandSelectBrands = new SQLiteCommand("SELECT * FROM Familles", Connection);
             SQLiteDataReader ResultFamilies = CommandSelectBrands.ExecuteReader();
             if (ResultFamilies != null)
@@ -123,12 +123,12 @@ namespace ProjetNET
         /// </summary>
         /// <param name="Sender">The object sending the event</param>
         /// <param name="Event">The event</param>
-        private void ButtonOK_Click(object sender, EventArgs e)
+        private void ButtonOK_Click(object Sender, EventArgs Event)
         {
             DialogResult = DialogResult.OK;
             SubFamily SubFamily = GetSubFamily();
             if (SubFamily != null)
-                DBConnect.GetInstance().UpdateOrCreateSubFamily(SubFamily);
+                DbConnect.GetInstance().UpdateOrCreateSubFamily(SubFamily);
             Close();
         }
 
@@ -137,7 +137,7 @@ namespace ProjetNET
         /// </summary>
         /// <param name="Sender">The object sending the event</param>
         /// <param name="Event">The event</param>
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object Sender, EventArgs Event)
         {
             Close();
         }
