@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-
-namespace ProjetNET
+﻿namespace ProjetNET
 {
     /// <summary>
     /// Modeling class for a brand
@@ -12,7 +6,7 @@ namespace ProjetNET
     public class Brand
     {
         public long Reference { get; set; }
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Constructor from all the data
