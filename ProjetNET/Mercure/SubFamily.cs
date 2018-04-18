@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ProjetNET
+﻿namespace ProjetNET
 {
     /// <summary>
     /// Modeling class for a subfamily
@@ -12,7 +7,7 @@ namespace ProjetNET
     {
         public long Reference { get; set; }
         public long FamilyReference { get; set; }
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Constructor from all the data
