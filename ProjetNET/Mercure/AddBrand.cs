@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ProjetNET
 {
+    /// <inheritdoc />
     /// <summary>
     /// indow to enter the data of a brand
     /// </summary>
     public partial class AddBrand : Form
     {
+        /// <inheritdoc />
         /// <summary>
         ///  Initialize an empty window to add a brand
         /// </summary>
@@ -23,10 +19,11 @@ namespace ProjetNET
             Construct(null);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Initialize a window to modify the given brand
         /// </summary>
-        /// <param name="Brand">The brand to edit</param>
+        /// <param name="Brand">The brand to edit. If the brand is null, no informations will be filled</param>
         public AddBrand(Brand Brand)
         {
             InitializeComponent();
@@ -40,7 +37,7 @@ namespace ProjetNET
         private void Construct(Brand Brand)
         {
             StartPosition = FormStartPosition.CenterParent;
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -48,7 +45,7 @@ namespace ProjetNET
             if (Brand != null)
                 SetBrand(Brand);
             else
-                ID = -1;
+                _Id = -1;
         }
 
         /// <summary>
@@ -57,7 +54,7 @@ namespace ProjetNET
         /// <returns>The new brand</returns>
         public Brand GetBrand()
         {
-            Brand Brand = new Brand(ID, TextBoxName.Text);
+            Brand Brand = new Brand(_Id, TextBoxName.Text);
             return Brand;
         }
 
@@ -68,33 +65,33 @@ namespace ProjetNET
         public void SetBrand(Brand Brand)
         {
             TextBoxName.Text = Brand.Name;
-            ID = Brand.Reference;
+            _Id = Brand.Reference;
         }
 
         /// <summary>
         /// Validate the creation (or editing)
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void ButtonOK_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void ButtonOK_Click(object Sender, EventArgs Event)
         {
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
             Brand Brand = GetBrand();
             if (Brand != null)
                 DBConnect.GetInstance().UpdateOrCreateBrand(Brand);
-            this.Close();
+            Close();
         }
 
         /// <summary>
         /// Close the window without saving the changes
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void ButtonCancel_Click(object Sender, EventArgs Event)
         {
-            this.Close();
+            Close();
         }
 
-        private long ID;
+        private long _Id;
     }
 }
