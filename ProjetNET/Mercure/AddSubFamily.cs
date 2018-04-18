@@ -17,6 +17,7 @@ namespace ProjetNET
             public override string ToString() { return Name; }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Initialize an empty window to add a subfamily
         /// </summary>
