@@ -1,64 +1,59 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 using System.Data.SQLite;
-using System.Data.SqlClient;
 
 namespace ProjetNET
 {
+    /// <inheritdoc />
     /// <summary>
     /// Main window of the application
     /// </summary>
     public partial class MainWindow : Form
     {
         public static event BottomBarEventHandler BottomBarEvent;
-        public delegate void BottomBarEventHandler(String Text);
-        private int SortColumn;
+        public delegate void BottomBarEventHandler(string Text);
+        private int _SortColumn;
 
         /// <summary>
         /// Update the text in the bottom bar
         /// </summary>
         /// <param name="Text">The new text to display</param>
-        public static void ChangeStripText(String Text) 
+        public static void ChangeStripText(string Text) 
         {
             if(BottomBarEvent != null)
                 BottomBarEvent.Invoke(Text);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Default constructor of the main window
         /// </summary>
         public MainWindow()
         {
-            this.FormClosing += MainWindow_FormClosing;
+            FormClosing += MainWindow_FormClosing;
             InitializeComponent();
 
             BottomBarEvent += (Text) => ToolStripStatusLabel1.Text = Text;
 
             listView1.FullRowSelect = true;
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView1.MouseClick += new MouseEventHandler(OnClickArticle);
+            listView1.MouseClick += OnClickArticle;
 
             LoadDatabase();
 
-            this.WindowState = FormWindowState.Maximized;
+            WindowState = FormWindowState.Maximized;
         }
 
         /// <summary>
         /// Define what to do when a click occurs on a element in the list of the articles
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void OnClickArticle(object sender, MouseEventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void OnClickArticle(object Sender, MouseEventArgs Event)
         {
-            if (e.Clicks == 2)
+            if (Event.Clicks == 2)
             {
                 if (listView1.SelectedItems.Count == 1)
                 {
@@ -66,69 +61,61 @@ namespace ProjetNET
                     UpdateArticle((Article)Item.Tag);
                 }
             }
-            else if (e.Button == MouseButtons.Right)
+            else if (Event.Button == MouseButtons.Right)
             {
-                ContextMenu ContextMenu = new ContextMenu();
+                ContextMenu ContextMenu1 = new ContextMenu();
 
                 if (listView1.SelectedItems.Count == 1)
                 {
                     ListViewItem Item = listView1.SelectedItems[0];
                     MenuItem MenuAdd = new MenuItem("Add article");
-                    MenuAdd.Click += new EventHandler((o, evt) =>
+                    MenuAdd.Click += (Sender2, Event2) =>
                     {
                         UpdateArticle(null);
-                    });
+                    };
                     MenuItem MenuMod = new MenuItem("Edit article");
-                    MenuMod.Click += new EventHandler((o, evt) =>
+                    MenuMod.Click += (Sender2, Event2) =>
                     {
-                       UpdateArticle((Article)Item.Tag);
-                    });
+                        UpdateArticle((Article)Item.Tag);
+                    };
                     MenuItem MenuDel = new MenuItem("Delete article");
-                    MenuDel.Click += new EventHandler((o, evt) =>
+                    MenuDel.Click += (Sender2, Event2) =>
                     {
-                        DBConnect.GetInstance().DeleteArticle(((Article)Item.Tag).Reference);
+                        DbConnect.GetInstance().DeleteArticle(((Article)Item.Tag).Reference);
                         LoadDatabase();
-                    });
+                    };
 
-                    ContextMenu.MenuItems.Add(MenuAdd);
-                    ContextMenu.MenuItems.Add(MenuMod);
-                    ContextMenu.MenuItems.Add(MenuDel);
+                    ContextMenu1.MenuItems.Add(MenuAdd);
+                    ContextMenu1.MenuItems.Add(MenuMod);
+                    ContextMenu1.MenuItems.Add(MenuDel);
                     
                 }
 
                 MenuItem MenuRfh = new MenuItem("Refresh");
-                MenuRfh.Click += new EventHandler((o, evt) => LoadDatabase());
-                ContextMenu.MenuItems.Add(MenuRfh);
+                MenuRfh.Click += (Sender2, Event2) => LoadDatabase();
+                ContextMenu1.MenuItems.Add(MenuRfh);
 
-                ContextMenu.Show(this, e.Location);
+                ContextMenu1.Show(this, Event.Location);
             }
-        }
-
-        /// <summary>
-        /// Reload all the data in the main list
-        /// </summary>
-        private void LoadDatabase()
-        {
-            LoadDatabase(true);
         }
 
         /// <summary>
         /// Reload (or not) the database, then group the data
         /// </summary>
         /// <param name="ShouldReloadData"></param>
-        private void LoadDatabase(bool ShouldReloadData)
+        private void LoadDatabase(bool ShouldReloadData = true)
         {
             if (ShouldReloadData)
             {
                 listView1.Columns.Clear();
                 listView1.Items.Clear();
-                SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT Marques.RefMarque AS RefMarque, SousFamilles.RefSousFamille AS RefSousFamille, Articles.RefArticle AS RefArticle, Articles.Description AS Description, Articles.PrixHT AS PrixHT, Articles.Quantite AS Quantite, SousFamilles.Nom AS SousFamille, Familles.Nom AS Famille, Marques.Nom AS Marque FROM Articles LEFT JOIN Marques ON Articles.RefMarque = Marques.RefMarque LEFT JOIN SousFamilles ON Articles.RefSousFamille = SousFamilles.RefSousFamille LEFT JOIN Familles ON SousFamilles.RefFamille = Familles.RefFamille", DBConnect.GetInstance().GetConnection());
+                SQLiteDataAdapter Adapter = new SQLiteDataAdapter("SELECT Marques.RefMarque AS RefMarque, SousFamilles.RefSousFamille AS RefSousFamille, Articles.RefArticle AS RefArticle, Articles.Description AS Description, Articles.PrixHT AS PrixHT, Articles.Quantite AS Quantite, SousFamilles.Nom AS SousFamille, Familles.Nom AS Famille, Marques.Nom AS Marque FROM Articles LEFT JOIN Marques ON Articles.RefMarque = Marques.RefMarque LEFT JOIN SousFamilles ON Articles.RefSousFamille = SousFamilles.RefSousFamille LEFT JOIN Familles ON SousFamilles.RefFamille = Familles.RefFamille", DbConnect.GetInstance().GetConnection());
                 DataTable Dt = new DataTable();
                 Adapter.Fill(Dt);
 
-                listView1.KeyDown += new KeyEventHandler(OnListViewKeyDown);
-                listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
-                listView1.ColumnClick += new ColumnClickEventHandler(OnColumnClick);
+                listView1.KeyDown += OnListViewKeyDown;
+                listView1.Sorting = SortOrder.Ascending;
+                listView1.ColumnClick += OnColumnClick;
                 listView1.ListViewItemSorter = new ListViewItemComparer();
 
                 listView1.Columns.Add("RefArticle");
@@ -139,9 +126,9 @@ namespace ProjetNET
                 listView1.Columns.Add("Price excluding VAT (€)");
                 listView1.Columns.Add("Quantity");
 
-                for (int i = 0; i < Dt.Rows.Count; i++)
+                for (int I = 0; I < Dt.Rows.Count; I++)
                 {
-                    DataRow Dr = Dt.Rows[i];
+                    DataRow Dr = Dt.Rows[I];
                     ListViewItem ListItem = new ListViewItem(Dr["RefArticle"].ToString());
                     ListItem.SubItems.Add(Dr["Description"].ToString());
                     ListItem.SubItems.Add(Dr["Famille"].ToString());
@@ -174,7 +161,7 @@ namespace ProjetNET
             listView1.Columns[5].Width = -2;
             listView1.Columns[6].Width = -2;
 
-            if (SortColumn == 0 || SortColumn == 1)
+            if (_SortColumn == 0 || _SortColumn == 1)
             {
                 listView1.ShowGroups = false;
             }
@@ -187,7 +174,7 @@ namespace ProjetNET
                     ListViewGroup Group = null;
                     foreach (ListViewGroup GroupTest in listView1.Groups)
                     {
-                        if (GroupTest.Header == ListItem.SubItems[SortColumn].Text)
+                        if (GroupTest.Header == ListItem.SubItems[_SortColumn].Text)
                         {
                             Group = GroupTest;
                             break;
@@ -197,12 +184,12 @@ namespace ProjetNET
                     if (Group == null)
                     {
                         Group = new ListViewGroup();
-                        Group.Name = ListItem.SubItems[SortColumn].Text;
-                        Group.Header = ListItem.SubItems[SortColumn].Text;
+                        Group.Name = ListItem.SubItems[_SortColumn].Text;
+                        Group.Header = ListItem.SubItems[_SortColumn].Text;
                         listView1.Groups.Add(Group);
                     }
 
-                    Group = listView1.Groups[ListItem.SubItems[SortColumn].Text];
+                    Group = listView1.Groups[ListItem.SubItems[_SortColumn].Text];
                     Group.Items.Add(ListItem);
                     ListItem.Group = Group;
                 }
@@ -212,13 +199,13 @@ namespace ProjetNET
         /// <summary>
         /// Define what to do when a keyboard key is pressed
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void OnListViewKeyDown(object sender, KeyEventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void OnListViewKeyDown(object Sender, KeyEventArgs Event)
         {
-            if (e.Handled)
+            if (Event.Handled)
                 return;
-            if ((Keys)e.KeyCode == Keys.Enter)
+            if (Event.KeyCode == Keys.Enter)
             {
                 if (listView1.SelectedItems.Count == 1)
                 {
@@ -226,45 +213,39 @@ namespace ProjetNET
                     UpdateArticle((Article)Item.Tag);
                 }
             }
-            else if ((Keys)e.KeyCode == Keys.F5)
+            else if (Event.KeyCode == Keys.F5)
             {
                 LoadDatabase();
             }
-            else if ((Keys)e.KeyCode == Keys.Delete)
+            else if (Event.KeyCode == Keys.Delete)
             {
-                for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                for (int I = 0; I < listView1.SelectedItems.Count; I++)
                 {
-                    ListViewItem Item = listView1.SelectedItems[i];
-                    DBConnect.GetInstance().DeleteArticle(((Article)Item.Tag).Reference);
+                    ListViewItem Item = listView1.SelectedItems[I];
+                    DbConnect.GetInstance().DeleteArticle(((Article)Item.Tag).Reference);
                 }
                 LoadDatabase();
             }
-            e.Handled = true;
+            Event.Handled = true;
         }
 
         /// <summary>
         /// Open a window to edit the given article
         /// </summary>
-        /// <param name="article">The article</param>
-        private void UpdateArticle(Article article)
+        /// <param name="Article">The article</param>
+        private void UpdateArticle(Article Article)
         {
-            AddArticle AddArticle = new AddArticle(article);
+            AddArticle AddArticle = new AddArticle(Article);
             if(AddArticle.ShowDialog() == DialogResult.OK)
                 LoadDatabase();
-        }
-
-        //TODO
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
-
         }
 
         /// <summary>
         /// Open the integration window
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SelectionXMLToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="Sender"></param>
+        /// <param name="Event"></param>
+        private void SelectionXMLToolStripMenuItem_Click(object Sender, EventArgs Event)
         {
             Integration MyIntegration = new Integration();
             MyIntegration.ShowDialog();
@@ -274,49 +255,50 @@ namespace ProjetNET
         /// <summary>
         /// Close the database when the application is closed
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainWindow_FormClosing(object sender, EventArgs e)
+        /// <param name="Sender"></param>
+        /// <param name="Event"></param>
+        private static void MainWindow_FormClosing(object Sender, EventArgs Event)
         {
-            DBConnect.GetInstance().Close();
+            DbConnect.GetInstance().Close();
         }
 
         /// <summary>
         /// Define what to do when a click occurs on a column
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void OnColumnClick(object sender, ColumnClickEventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void OnColumnClick(object Sender, ColumnClickEventArgs Event)
         {
             ListViewItemComparer LastComparer = (ListViewItemComparer)listView1.ListViewItemSorter;
-            if (LastComparer.GetCol() == e.Column)
+            if (LastComparer.GetCol() == Event.Column)
             {
                 LastComparer.Invert();
                 listView1.Sort();
             }
             else
             {
-                SortColumn = e.Column;
+                _SortColumn = Event.Column;
                 LoadDatabase(false);
-                listView1.ListViewItemSorter = new ListViewItemComparer(e.Column);
+                listView1.ListViewItemSorter = new ListViewItemComparer(Event.Column);
             }
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Class to sort a list depending of a given column
         /// </summary>
         class ListViewItemComparer : IComparer
         {
-            private int Col;
-            private bool Inverted;
+            private readonly int _Col;
+            private bool _Inverted;
 
             /// <summary>
             /// Default constructor
             /// </summary>
             public ListViewItemComparer()
             {
-                Col = 0;
-                Inverted = false;
+                _Col = 0;
+                _Inverted = false;
             }
 
             /// <summary>
@@ -325,7 +307,7 @@ namespace ProjetNET
             /// <returns>The number of the actual sorting column</returns>
             public int GetCol()
             {
-                return Col;
+                return _Col;
             }
 
             /// <summary>
@@ -333,7 +315,7 @@ namespace ProjetNET
             /// </summary>
             public void Invert()
             {
-                Inverted = !Inverted;
+                _Inverted = !_Inverted;
             }
 
             /// <summary>
@@ -342,24 +324,26 @@ namespace ProjetNET
             /// <param name="ArgCol">The sorting column</param>
             public ListViewItemComparer(int ArgCol)
             {
-                Col = ArgCol;
-                Inverted = false;
+                _Col = ArgCol;
+                _Inverted = false;
             }
 
+            /// <inheritdoc />
             /// <summary>
             /// Compare two items in the list
             /// </summary>
-            /// <param name="x">The first item</param>
-            /// <param name="y">The second item</param>
+            /// <param name="X">The first item</param>
+            /// <param name="Y">The second item</param>
             /// <returns>result is negative if X before Y, positive if X after Y, 0 if equal</returns>
-            public int Compare(object x, object y)
+            public int Compare(object X, object Y)
             {
-                switch (Col)
+                switch (_Col)
                 {
                     case 5:
-                        return (Inverted ? -1 : 1) * (int)(double.Parse(((ListViewItem)x).SubItems[Col].Text, System.Globalization.CultureInfo.CurrentUICulture) - double.Parse(((ListViewItem)y).SubItems[Col].Text, System.Globalization.CultureInfo.CurrentUICulture));
+                        return (_Inverted ? -1 : 1) * (int)(double.Parse(((ListViewItem)X).SubItems[_Col].Text, System.Globalization.CultureInfo.CurrentUICulture) - double.Parse(((ListViewItem)Y).SubItems[_Col].Text, System.Globalization.CultureInfo.CurrentUICulture));
                     default:
-                        return (Inverted ? -1 : 1) * String.Compare(((ListViewItem)x).SubItems[Col].Text, ((ListViewItem)y).SubItems[Col].Text);
+                        // ReSharper disable once StringCompareIsCultureSpecific.1
+                        return (_Inverted ? -1 : 1) * String.Compare(((ListViewItem)X).SubItems[_Col].Text, ((ListViewItem)Y).SubItems[_Col].Text);
                 }
             }
         }
@@ -367,9 +351,9 @@ namespace ProjetNET
         /// <summary>
         /// Open the Brand window when a click occurs on the menu action 'Brand'
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void BrandsToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void BrandsToolStripMenuItem_Click(object Sender, EventArgs Event)
         {
             Brands Brands = new Brands();
             Brands.ShowDialog();
@@ -379,9 +363,9 @@ namespace ProjetNET
         /// <summary>
         /// Open the Family window when a click occurs on the menu action 'Family'
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void FamiliesToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void FamiliesToolStripMenuItem_Click(object Sender, EventArgs Event)
         {
             Families Families = new Families();
             Families.ShowDialog();
@@ -391,9 +375,9 @@ namespace ProjetNET
         /// <summary>
         /// Open the Subfamily window when a click occurs on the menu action 'Subfamily'
         /// </summary>
-        /// <param name="sender">The object sending the event</param>
-        /// <param name="e">The event</param>
-        private void SubFamiliesToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
+        private void SubFamiliesToolStripMenuItem_Click(object Sender, EventArgs Event)
         {
             SubFamilies SubFamilies = new SubFamilies();
             SubFamilies.ShowDialog();

@@ -127,7 +127,6 @@
             this.Controls.Add(this.MyMainMenuStrip);
             this.Name = "MainWindow";
             this.Text = "Mercure";
-            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.MainStatusStrip.ResumeLayout(false);
             this.MainStatusStrip.PerformLayout();
             this.MyMainMenuStrip.ResumeLayout(false);
