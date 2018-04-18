@@ -11,8 +11,14 @@ using System.Windows.Forms;
 
 namespace ProjetNET
 {
+    /// <summary>
+    /// The window to display the list of brands
+    /// </summary>
     public partial class Brands : Form
     {
+        /// <summary>
+        /// Constructor by default
+        /// </summary>
         public Brands()
         {
             InitializeComponent();
@@ -24,6 +30,11 @@ namespace ProjetNET
             LoadDatabase();
         }
 
+        /// <summary>
+        /// Define what to do when a click occurs on a element in the list
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void OnClickBrand(object sender, MouseEventArgs e)
         {
             if (e.Clicks == 2)
@@ -71,6 +82,9 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Reload all the items in the view from the database
+        /// </summary>
         private void LoadDatabase()
         {
             listView1.Columns.Clear();
@@ -106,6 +120,11 @@ namespace ProjetNET
             Adapter.Dispose();
         }
 
+        /// <summary>
+        /// Sort the list depending of the clicked column
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The object</param>
         private void OnColumnClick(object sender, ColumnClickEventArgs e)
         {
             ListViewItemComparer LastComparer = (ListViewItemComparer) listView1.ListViewItemSorter;
@@ -120,33 +139,56 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Class to sort a list depending of a given column
+        /// </summary>
         private class ListViewItemComparer : IComparer
         {
             private int Col;
             private bool Inverted;
 
+            /// <summary>
+            /// Default constructor
+            /// </summary>
             public ListViewItemComparer()
             {
                 Col = 0;
                 Inverted = false;
             }
 
+            /// <summary>
+            /// Return the number of the actual sorting column
+            /// </summary>
+            /// <returns>The number of the actual sorting column</returns>
             public int GetCol()
             {
                 return Col;
             }
 
+            /// <summary>
+            /// Invert (asc / desc) the actual sorting
+            /// </summary>
             public void Invert()
             {
                 Inverted = !Inverted;
             }
 
+            /// <summary>
+            /// Constructor with a given column
+            /// </summary>
+            /// <param name="ArgCol">The sorting column</param>
             public ListViewItemComparer(int ArgCol)
             {
                 Col = ArgCol;
                 Inverted = false;
             }
 
+            /// <summary>
+            /// Compare two items in the list
+            /// </summary>
+            /// <param name="x">The first item</param>
+            /// <param name="y">The second item</param>
+            /// <returns>result is negative if X before Y, positive if X after Y, 0 if equal</returns>
             public int Compare(object x, object y)
             {
                 switch (Col)
@@ -164,6 +206,11 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Define what to do when a keyboard key is pressed on an element
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void OnListViewKeyDown(object sender, KeyEventArgs e)
         {
             if ((Keys) e.KeyCode == Keys.Enter)
@@ -190,6 +237,10 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Open a window to edit the given brand and update database if there are modifications
+        /// </summary>
+        /// <param name="Family">The family to update</param>
         private void UpdateBrand(Brand Brand)
         {
             AddBrand AddBrand = new AddBrand(Brand);

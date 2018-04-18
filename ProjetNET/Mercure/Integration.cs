@@ -10,8 +10,14 @@ using System.Windows.Forms;
 
 namespace ProjetNET
 {
+    /// <summary>
+    /// Window to import XML file data in the database
+    /// </summary>
     public partial class Integration : Form
     {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Integration()
         {
             InitializeComponent();
@@ -21,6 +27,11 @@ namespace ProjetNET
             MinimizeBox = false;
         }
 
+        /// <summary>
+        /// Open a browser to select a file
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void BrowseButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog MyFileDialog = new OpenFileDialog();
@@ -32,6 +43,11 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Update the database from the selected file
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void UpdateButton_Click(object sender, EventArgs e)
         {
             if (TextBox1.Text == "")
@@ -68,6 +84,11 @@ namespace ProjetNET
             System.Windows.Forms.MessageBox.Show("Updated " + Updated + " elements and created " + Added + " elements");
         }
 
+        /// <summary>
+        /// Erase and reload the database from the selected file
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void NewButton_Click(object sender, EventArgs e)
         {
             if (TextBox1.Text == "")

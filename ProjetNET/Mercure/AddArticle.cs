@@ -11,26 +11,44 @@ using System.Text.RegularExpressions;
 
 namespace ProjetNET
 {
+    /// <summary>
+    /// Window to enter the data of an article
+    /// </summary>
     public partial class AddArticle : Form
     {
+        /// <summary>
+        /// TODO
+        /// </summary>
         private class ComboBoxItem
         {
             public string Name { get; set; }
             public long Value { get; set; }
             public override string ToString() { return Name; }
         }
-        
+
+        /// <summary>
+        /// Initialize an empty window to add an article
+        /// </summary>
         public AddArticle()
         {
             InitializeComponent();
             Construct(null);
         }
+
+        /// <summary>
+        /// Initialize a window to modify the given article
+        /// </summary>
+        /// <param name="Article">The article to edit</param>
         public AddArticle(Article Article)
         {
             InitializeComponent();
             Construct(Article);
         }
 
+        /// <summary>
+        /// Put the attributes of the given article in the corresponding fields
+        /// </summary>
+        /// <param name="Article">The article (or null for empty window)</param>
         private void Construct(Article Article)
         {
             StartPosition = FormStartPosition.CenterParent;
@@ -97,6 +115,10 @@ namespace ProjetNET
                 SetArticle(Article);
         }
 
+        /// <summary>
+        /// Return the article created (or edited) by the window
+        /// </summary>
+        /// <returns>The new article</returns>
         public Article GetArticle()
         {
             ComboBoxItem BrandItem = (ComboBoxItem)ComboBoxBrand.SelectedItem;
@@ -105,6 +127,10 @@ namespace ProjetNET
             return Art;
         }
 
+        /// <summary>
+        /// Edit the given article with the new data
+        /// </summary>
+        /// <param name="Art">The article to edit</param>
         public void SetArticle(Article Art)
         {
             for(int BrandIndex = 0; BrandIndex < ComboBoxBrand.Items.Count; BrandIndex++)
@@ -129,6 +155,11 @@ namespace ProjetNET
             NumericUpDownQuantity.Value = (decimal)Art.Quantity;
         }
 
+        /// <summary>
+        /// Validate the creation (or editing)
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void ButtonOK_Click(object sender, EventArgs e)
         {
             Article Article = GetArticle();
@@ -144,6 +175,11 @@ namespace ProjetNET
             this.Close();
         }
 
+        /// <summary>
+        /// Close the window without saving the changes
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
             this.Close();
