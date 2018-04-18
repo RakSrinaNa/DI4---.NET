@@ -13,18 +13,28 @@ using System.Data.SqlClient;
 
 namespace ProjetNET
 {
+    /// <summary>
+    /// Main window of the application
+    /// </summary>
     public partial class MainWindow : Form
     {
         public static event BottomBarEventHandler BottomBarEvent;
         public delegate void BottomBarEventHandler(String Text);
         private int SortColumn;
 
+        /// <summary>
+        /// Update the text in the bottom bar
+        /// </summary>
+        /// <param name="Text">The new text to display</param>
         public static void ChangeStripText(String Text) 
         {
             if(BottomBarEvent != null)
                 BottomBarEvent.Invoke(Text);
         }
 
+        /// <summary>
+        /// Default constructor of the main window
+        /// </summary>
         public MainWindow()
         {
             this.FormClosing += MainWindow_FormClosing;
@@ -41,6 +51,11 @@ namespace ProjetNET
             this.WindowState = FormWindowState.Maximized;
         }
 
+        /// <summary>
+        /// Define what to do when a click occurs on a element in the list of the articles
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void OnClickArticle(object sender, MouseEventArgs e)
         {
             if (e.Clicks == 2)
@@ -89,11 +104,18 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Reload all the data in the main list
+        /// </summary>
         private void LoadDatabase()
         {
             LoadDatabase(true);
         }
 
+        /// <summary>
+        /// Reload (or not) the database, then group the data
+        /// </summary>
+        /// <param name="ShouldReloadData"></param>
         private void LoadDatabase(bool ShouldReloadData)
         {
             if (ShouldReloadData)
@@ -187,6 +209,11 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Define what to do when a keyboard key is pressed
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void OnListViewKeyDown(object sender, KeyEventArgs e)
         {
             if ((Keys)e.KeyCode == Keys.Enter)
@@ -212,6 +239,10 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Open a window to edit the given article
+        /// </summary>
+        /// <param name="article">The article</param>
         private void UpdateArticle(Article article)
         {
             AddArticle AddArticle = new AddArticle(article);
@@ -219,11 +250,17 @@ namespace ProjetNET
                 LoadDatabase();
         }
 
+        //TODO
         private void MainWindow_Load(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// Open the integration window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectionXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Integration MyIntegration = new Integration();
@@ -231,11 +268,21 @@ namespace ProjetNET
             LoadDatabase();
         }
 
+        /// <summary>
+        /// Close the database when the application is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainWindow_FormClosing(object sender, EventArgs e)
         {
             DBConnect.GetInstance().Close();
         }
 
+        /// <summary>
+        /// Define what to do when a click occurs on a column
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void OnColumnClick(object sender, ColumnClickEventArgs e)
         {
             ListViewItemComparer LastComparer = (ListViewItemComparer)listView1.ListViewItemSorter;
@@ -252,32 +299,56 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Class to sort a list depending of a given column
+        /// </summary>
         class ListViewItemComparer : IComparer
         {
             private int Col;
             private bool Inverted;
+
+            /// <summary>
+            /// Default constructor
+            /// </summary>
             public ListViewItemComparer()
             {
                 Col = 0;
                 Inverted = false;
             }
 
+            /// <summary>
+            /// Return the number of the actual sorting column
+            /// </summary>
+            /// <returns>The number of the actual sorting column</returns>
             public int GetCol()
             {
                 return Col;
             }
 
+            /// <summary>
+            /// Invert (asc / desc) the actual sorting
+            /// </summary>
             public void Invert()
             {
                 Inverted = !Inverted;
             }
 
+            /// <summary>
+            /// Constructor with a given column
+            /// </summary>
+            /// <param name="ArgCol">The sorting column</param>
             public ListViewItemComparer(int ArgCol)
             {
                 Col = ArgCol;
                 Inverted = false;
             }
 
+            /// <summary>
+            /// Compare two items in the list
+            /// </summary>
+            /// <param name="x">The first item</param>
+            /// <param name="y">The second item</param>
+            /// <returns>result is negative if X before Y, positive if X after Y, 0 if equal</returns>
             public int Compare(object x, object y)
             {
                 switch (Col)
@@ -290,6 +361,11 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Open the Brand window when a click occurs on the menu action 'Brand'
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void BrandsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Brands Brands = new Brands();
@@ -297,6 +373,11 @@ namespace ProjetNET
             LoadDatabase();
         }
 
+        /// <summary>
+        /// Open the Family window when a click occurs on the menu action 'Family'
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void FamiliesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Families Families = new Families();
@@ -304,6 +385,11 @@ namespace ProjetNET
             LoadDatabase();
         }
 
+        /// <summary>
+        /// Open the Subfamily window when a click occurs on the menu action 'Subfamily'
+        /// </summary>
+        /// <param name="sender">The object sending the event</param>
+        /// <param name="e">The event</param>
         private void SubFamiliesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SubFamilies SubFamilies = new SubFamilies();

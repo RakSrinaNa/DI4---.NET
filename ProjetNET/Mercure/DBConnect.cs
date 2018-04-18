@@ -7,21 +7,35 @@ using System.Xml;
 
 namespace ProjetNET
 {
+    /// <summary>
+    /// Controller for all interactions with the database
+    /// </summary>
     public class DBConnect
     {
         private static DBConnect INSTANCE = null;
         private SQLiteConnection Connection;
 
+        /// <summary>
+        /// Get an instance of the controller (create it if necessary)
+        /// </summary>
+        /// <returns>The instance</returns>
         public static DBConnect GetInstance()
         {
             return INSTANCE ?? (INSTANCE = new DBConnect());
         }
 
+        /// <summary>
+        /// Get the connection with the database
+        /// </summary>
+        /// <returns>The connection</returns>
         public SQLiteConnection GetConnection()
         {
             return Connection;
         }
 
+        /// <summary>
+        /// Private constructor for the database 'Mercure.SQLite'
+        /// </summary>
         private DBConnect()
         {
             Connection = new SQLiteConnection("Data Source=Mercure.SQLite;Version=3;");
@@ -30,6 +44,9 @@ namespace ProjetNET
             MainWindow.ChangeStripText("Connected to DB");
         }
 
+        /// <summary>
+        /// Close the connection with the database
+        /// </summary>
         public void Close()
         {
             Connection.Close();
@@ -37,6 +54,11 @@ namespace ProjetNET
             MainWindow.ChangeStripText("Disconnected from DB");
         }
 
+        /// <summary>
+        /// Add the given article to the database
+        /// </summary>
+        /// <param name="Article">The article</param>
+        /// <returns>True if success, False otherwise</returns>
         public bool AddArticle(XmlNode Article)
         {
             long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
@@ -51,6 +73,11 @@ namespace ProjetNET
             return CommandInsert.ExecuteNonQuery() == 1;
         }
 
+        /// <summary>
+        /// Update the given article into the database
+        /// </summary>
+        /// <param name="Article">The article</param>
+        /// <returns>True if success, False otherwise</returns>
         public bool UpdateArticle(XmlNode Article)
         {
             long SFRef = CreateSubFamily(Article.SelectSingleNode("sousFamille").InnerText, Article.SelectSingleNode("famille").InnerText);
@@ -65,6 +92,12 @@ namespace ProjetNET
             return CommandInsert.ExecuteNonQuery() == 1;
         }
 
+        /// <summary>
+        /// Add the given subfamily to the database
+        /// </summary>
+        /// <param name="Name">The name of the new subfamily</param>
+        /// <param name="Famille">The id of its family</param>
+        /// <returns>The id of the newly created subfamily</returns>
         public long CreateSubFamily(String Name, long Famille)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefSousFamille FROM SousFamilles WHERE Nom = @Name", Connection);
@@ -114,11 +147,22 @@ namespace ProjetNET
             return ID;
         }
 
+        /// <summary>
+        /// Add the given subfamily to the database
+        /// </summary>
+        /// <param name="Name">The name of the new subfamily</param>
+        /// <param name="Famille">The name of its family</param>
+        /// <returns>The id of the newly created subfamily</returns>
         public long CreateSubFamily(String Name, String Famille)
         {
             return CreateSubFamily(Name, CreateFamily(Famille));
         }
 
+        /// <summary>
+        /// Add the given brand to the database
+        /// </summary>
+        /// <param name="Name">The name of the new brand</param>
+        /// <returns>The id of the newmy created brand</returns>
         public long CreateBrand(String Name)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefMarque FROM Marques WHERE Nom = @Name", Connection);
@@ -167,6 +211,11 @@ namespace ProjetNET
             return ID;
         }
 
+        /// <summary>
+        /// Add the given family to the database
+        /// </summary>
+        /// <param name="Name">The name of the new family</param>
+        /// <returns>The id of the newly created family</returns>
         public long CreateFamily(String Name)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefFamille FROM Familles WHERE Nom = @Name", Connection);
@@ -215,6 +264,9 @@ namespace ProjetNET
             return ID;
         }
 
+        /// <summary>
+        /// Empty all the database
+        /// </summary>
         public void Clear()
         {
             String[] Tables = {"Articles", "Familles", "Marques", "SousFamilles"};
@@ -225,6 +277,11 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Tells if an article exists by its reference
+        /// </summary>
+        /// <param name="ID">The reference to look for</param>
+        /// <returns>True if the article exists, False otherwise</returns>
         public bool ArticleExists(string ID)
         {
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefArticle FROM Articles WHERE RefArticle = @ID", Connection);
@@ -244,6 +301,10 @@ namespace ProjetNET
             return false;
         }
 
+        /// <summary>
+        /// Delete an article by its reference
+        /// </summary>
+        /// <param name="Ref">The reference</param>
         public void DeleteArticle(string Ref)
         {
             SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefArticle = @Ref", Connection);
@@ -251,6 +312,10 @@ namespace ProjetNET
             CommandDelete.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Delete a brand by its reference
+        /// </summary>
+        /// <param name="Ref">The reference</param>
         public void DeleteBrand(long Ref)
         {
             {
@@ -265,6 +330,10 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Delete a family by its reference
+        /// </summary>
+        /// <param name="Ref">The reference</param>
         public void DeleteFamily(long Ref)
         {
             {
@@ -308,6 +377,10 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Delete a subfamily by its reference
+        /// </summary>
+        /// <param name="Ref">The reference</param>
         public void DeleteSubFamily(long Ref)
         {
             {
@@ -350,6 +423,10 @@ namespace ProjetNET
             }
         }
 
+        /// <summary>
+        /// Update (or insert if it doesn't exist) an article in the database
+        /// </summary>
+        /// <param name="Article">The article</param>
         public void UpdateOrCreateArticle(Article Article)
         {
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO Articles (RefArticle, Description, RefSousFamille, RefMarque, PrixHT, Quantite) VALUES (@ID, @Desc, @SF, @M, @PHT, @Q)", Connection);
@@ -364,6 +441,10 @@ namespace ProjetNET
                 throw new Exception("Inserting A failed");
         }
 
+        /// <summary>
+        /// Update (or insert if it doesn't exist) a brand in the database
+        /// </summary>
+        /// <param name="Brand">The brand</param>
         public void UpdateOrCreateBrand(Brand Brand)
         {
             long ID = -1;
@@ -396,6 +477,10 @@ namespace ProjetNET
                 throw new Exception("Inserting M failed");
         }
 
+        /// <summary>
+        /// Update (or insert if it doesn't exist) a family in the database
+        /// </summary>
+        /// <param name="Family">The family</param>
         public void UpdateOrCreateFamily(Family Family)
         {
             long ID = -1;
@@ -428,6 +513,10 @@ namespace ProjetNET
                 throw new Exception("Inserting F failed");
         }
 
+        /// <summary>
+        /// Update (or insert if it doesn't exist) a subfamily in the database
+        /// </summary>
+        /// <param name="SubFamily">The subfamily</param>
         public void UpdateOrCreateSubFamily(SubFamily SubFamily)
         {
             long ID = -1;
