@@ -549,7 +549,7 @@ namespace ProjetNET
             long ID = -1;
             if (SubFamily.Reference == -1)
             {
-                SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefSousFamily) AS ID FROM SousFamilles", Connection);
+                SQLiteCommand CommandID = new SQLiteCommand("SELECT MAX(RefSousFamille) AS ID FROM SousFamilles", Connection);
                 SQLiteDataReader ResultID = CommandID.ExecuteReader();
                 if (ResultID != null)
                 {
