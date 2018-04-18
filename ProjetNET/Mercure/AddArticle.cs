@@ -12,7 +12,8 @@ namespace ProjetNET
     public partial class AddArticle : Form
     {
         /// <summary>
-        /// TODO: Clément
+        /// Represents an item with a hidden value in a combobox
+        /// For use when an ID is needed (Sub family and brand select)
         /// </summary>
         private class ComboBoxItem
         {

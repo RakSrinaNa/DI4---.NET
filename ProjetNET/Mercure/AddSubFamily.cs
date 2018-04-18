@@ -10,9 +10,6 @@ namespace ProjetNET
     /// </summary>
     public partial class AddSubFamily : Form
     {
-        /// <summary>
-        /// Initialize an empty window to add a subfamily
-        /// </summary>
         private class ComboBoxItem
         {
             public string Name { get; set; }
@@ -20,6 +17,9 @@ namespace ProjetNET
             public override string ToString() { return Name; }
         }
 
+        /// <summary>
+        /// Initialize an empty window to add a subfamily
+        /// </summary>
         public AddSubFamily()
         {
             InitializeComponent();

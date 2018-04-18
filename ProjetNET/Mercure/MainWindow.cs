@@ -216,6 +216,8 @@ namespace ProjetNET
         /// <param name="e">The event</param>
         private void OnListViewKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Handled)
+                return;
             if ((Keys)e.KeyCode == Keys.Enter)
             {
                 if (listView1.SelectedItems.Count == 1)
@@ -237,6 +239,7 @@ namespace ProjetNET
                 }
                 LoadDatabase();
             }
+            e.Handled = true;
         }
 
         /// <summary>
