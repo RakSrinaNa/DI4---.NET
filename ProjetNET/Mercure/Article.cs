@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ProjetNET
+﻿namespace ProjetNET
 {
     /// <summary>
     /// Modeling class for an article
@@ -21,10 +16,10 @@ namespace ProjetNET
         /// <param name="Quantity">The quantity of the article</param>
         public Article(string RefArticle, string Description, long RefSubFamily, long RefBrand, double Price, long Quantity)
         {
-            this.Reference = RefArticle;
+            Reference = RefArticle;
             this.Description = Description;
-            this.Brand = RefBrand;
-            this.SubFamily = RefSubFamily;
+            Brand = RefBrand;
+            SubFamily = RefSubFamily;
             this.Price = Price;
             this.Quantity = Quantity;
         }
