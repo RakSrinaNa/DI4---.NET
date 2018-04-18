@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ProjetNET
 {
+    /// <inheritdoc />
     /// <summary>
     /// Window to enter the data of a family
     /// </summary>
     public partial class AddFamily : Form
     {
+        /// <inheritdoc />
         /// <summary>
         /// Initialize an empty window to add a family
         /// </summary>
@@ -23,6 +19,7 @@ namespace ProjetNET
             Construct(null);
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Initialize a window to modify the given family
         /// </summary>
@@ -40,7 +37,7 @@ namespace ProjetNET
         private void Construct(Family Family)
         {
             StartPosition = FormStartPosition.CenterParent;
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -48,35 +45,35 @@ namespace ProjetNET
             if (Family != null)
                 SetFamily(Family);
             else
-                ID = -1;
+                _Id = -1;
         }
 
         public Family GetFamily()
         {
-            Family Family = new Family(ID, TextBoxName.Text);
+            Family Family = new Family(_Id, TextBoxName.Text);
             return Family;
         }
 
         public void SetFamily(Family Family)
         {
             TextBoxName.Text = Family.Name;
-            ID = Family.Reference;
+            _Id = Family.Reference;
         }
 
-        private void ButtonOK_Click(object sender, EventArgs e)
+        private void ButtonOK_Click(object Sender, EventArgs Event)
         {
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
             Family Family = GetFamily();
             if (Family != null)
                 DBConnect.GetInstance().UpdateOrCreateFamily(Family);
-            this.Close();
+            Close();
         }
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object Sender, EventArgs Event)
         {
-            this.Close();
+            Close();
         }
 
-        private long ID;
+        private long _Id;
     }
 }
