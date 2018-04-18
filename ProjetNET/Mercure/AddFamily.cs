@@ -48,18 +48,31 @@ namespace ProjetNET
                 _Id = -1;
         }
 
+        /// <summary>
+        /// Return the family created (or edited) by the window
+        /// </summary>
+        /// <returns>The new family</returns>
         public Family GetFamily()
         {
             Family Family = new Family(_Id, TextBoxName.Text);
             return Family;
         }
 
+        /// <summary>
+        /// Edit the given family with the new data
+        /// </summary>
+        /// <param name="Family">The family to edit</param>
         public void SetFamily(Family Family)
         {
             TextBoxName.Text = Family.Name;
             _Id = Family.Reference;
         }
 
+        /// <summary>
+        /// Validate the creation (or editing)
+        /// </summary>
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
         private void ButtonOK_Click(object Sender, EventArgs Event)
         {
             DialogResult = DialogResult.OK;
@@ -69,6 +82,11 @@ namespace ProjetNET
             Close();
         }
 
+        /// <summary>
+        /// Close the window without saving the changes
+        /// </summary>
+        /// <param name="Sender">The object sending the event</param>
+        /// <param name="Event">The event</param>
         private void ButtonCancel_Click(object Sender, EventArgs Event)
         {
             Close();
