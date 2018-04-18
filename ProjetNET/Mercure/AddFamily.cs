@@ -44,6 +44,39 @@ namespace ProjetNET
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
+
+            if (Family != null)
+                SetFamily(Family);
+            else
+                ID = -1;
         }
+
+        public Family GetFamily()
+        {
+            Family Family = new Family(ID, TextBoxName.Text);
+            return Family;
+        }
+
+        public void SetFamily(Family Family)
+        {
+            TextBoxName.Text = Family.Name;
+            ID = Family.Reference;
+        }
+
+        private void ButtonOK_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            Family Family = GetFamily();
+            if (Family != null)
+                DBConnect.GetInstance().UpdateOrCreateFamily(Family);
+            this.Close();
+        }
+
+        private void ButtonCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private long ID;
     }
 }
