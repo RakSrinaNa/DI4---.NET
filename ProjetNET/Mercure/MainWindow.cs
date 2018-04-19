@@ -67,6 +67,7 @@ namespace ProjetNET
 
                 if (listView1.SelectedItems.Count == 1)
                 {
+                    //Create context menu
                     ListViewItem Item = listView1.SelectedItems[0];
                     MenuItem MenuAdd = new MenuItem("Add article");
                     MenuAdd.Click += (Sender2, Event2) =>
@@ -118,6 +119,7 @@ namespace ProjetNET
                 listView1.ColumnClick += OnColumnClick;
                 listView1.ListViewItemSorter = new ListViewItemComparer();
 
+                //Create columns
                 listView1.Columns.Add("RefArticle");
                 listView1.Columns.Add("Description");
                 listView1.Columns.Add("Family");
@@ -126,6 +128,7 @@ namespace ProjetNET
                 listView1.Columns.Add("Price excluding VAT (€)");
                 listView1.Columns.Add("Quantity");
 
+                //Add items
                 for (int I = 0; I < Dt.Rows.Count; I++)
                 {
                     DataRow Dr = Dt.Rows[I];
@@ -153,6 +156,7 @@ namespace ProjetNET
                 listView1.Groups.Clear();
             }
 
+            //Resize columns
             listView1.Columns[0].Width = -2;
             listView1.Columns[1].Width = -2;
             listView1.Columns[2].Width = -2;
@@ -161,14 +165,14 @@ namespace ProjetNET
             listView1.Columns[5].Width = -2;
             listView1.Columns[6].Width = -2;
 
-            if (_SortColumn == 0 || _SortColumn == 1)
+            if (_SortColumn == 0 || _SortColumn == 1) //Hide or show groups
             {
                 listView1.ShowGroups = false;
             }
             else
             {
                 listView1.ShowGroups = true;
-                foreach (ListViewItem ListItem in listView1.Items)
+                foreach (ListViewItem ListItem in listView1.Items) //Set group for each item
                 {
                     ListItem.Group = null;
                     ListViewGroup Group = null;
@@ -270,7 +274,7 @@ namespace ProjetNET
         private void OnColumnClick(object Sender, ColumnClickEventArgs Event)
         {
             ListViewItemComparer LastComparer = (ListViewItemComparer)listView1.ListViewItemSorter;
-            if (LastComparer.GetCol() == Event.Column)
+            if (LastComparer.GetCol() == Event.Column) //If the column is the one already being sorted.
             {
                 LastComparer.Invert();
                 listView1.Sort();
@@ -339,7 +343,8 @@ namespace ProjetNET
             {
                 switch (_Col)
                 {
-                    case 5:
+                    case 5: //If it's the price
+                    case 6: //If it's the price
                         return (_Inverted ? -1 : 1) * (int)(double.Parse(((ListViewItem)X).SubItems[_Col].Text, System.Globalization.CultureInfo.CurrentUICulture) - double.Parse(((ListViewItem)Y).SubItems[_Col].Text, System.Globalization.CultureInfo.CurrentUICulture));
                     default:
                         // ReSharper disable once StringCompareIsCultureSpecific.1

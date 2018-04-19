@@ -97,10 +97,12 @@ namespace ProjetNET
                 listView1.ColumnClick += OnColumnClick;
                 listView1.ListViewItemSorter = new ListViewItemComparer();
 
+                //Create columns
                 listView1.Columns.Add("RefSousFamille");
                 listView1.Columns.Add("RefFamille");
                 listView1.Columns.Add("Nom");
 
+                //Add items
                 for (int I = 0; I < Dt.Rows.Count; I++)
                 {
                     DataRow Dr = Dt.Rows[I];
@@ -122,17 +124,19 @@ namespace ProjetNET
                 listView1.Groups.Clear();
             }
 
+            //Resize columns
             listView1.Columns[0].Width = -2;
             listView1.Columns[1].Width = -2;
             listView1.Columns[2].Width = -2;
 
-            if (_SortColumn == 0 || _SortColumn == 2)
+            if (_SortColumn == 0 || _SortColumn == 2) //If should group or not
             {
                 listView1.ShowGroups = false;
             }
             else
             {
-                 listView1.ShowGroups = true;
+                //Create groups
+                listView1.ShowGroups = true;
                 foreach (ListViewItem ListItem in listView1.Items)
                 {
                     ListItem.Group = null;

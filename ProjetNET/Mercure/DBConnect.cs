@@ -85,7 +85,7 @@ namespace ProjetNET
             CommandInsert.Parameters.AddWithValue("@Desc", Article.SelectSingleNode("description").InnerText);
             CommandInsert.Parameters.AddWithValue("@SF", SfRef);
             CommandInsert.Parameters.AddWithValue("@M", CreateBrand(Article.SelectSingleNode("marque").InnerText));
-            CommandInsert.Parameters.AddWithValue("@PHT", Double.Parse(Article.SelectSingleNode("prixHT").InnerText));
+            CommandInsert.Parameters.AddWithValue("@PHT", double.Parse(Article.SelectSingleNode("prixHT").InnerText));
 
             return CommandInsert.ExecuteNonQuery() == 1;
         }
@@ -98,6 +98,7 @@ namespace ProjetNET
         /// <returns>The id of the newly created subfamily</returns>
         public long CreateSubFamily(string Name, long Famille)
         {
+            //Get already existing sub family
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefSousFamille FROM SousFamilles WHERE Nom = @Name", _Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
 
@@ -117,6 +118,7 @@ namespace ProjetNET
                 throw new Exception("Getting SF failed");
             }
 
+            //Get next ID
             long Id = 0;
             SQLiteCommand CommandId = new SQLiteCommand("SELECT MAX(RefSousFamille) AS ID FROM SousFamilles", _Connection);
             SQLiteDataReader ResultId = CommandId.ExecuteReader();
@@ -135,6 +137,7 @@ namespace ProjetNET
                 throw new Exception("Getting SF failed");
             }
 
+            //Insert subfamily
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO SousFamilles (RefSousFamille, RefFamille, Nom) VALUES (@ID, @RefF, @Name)", _Connection);
             CommandInsert.Parameters.AddWithValue("@ID", ++Id);
             CommandInsert.Parameters.AddWithValue("@RefF", Famille);
@@ -151,7 +154,7 @@ namespace ProjetNET
         /// <param name="Name">The name of the new subfamily</param>
         /// <param name="Famille">The name of its family</param>
         /// <returns>The id of the newly created subfamily</returns>
-        public long CreateSubFamily(String Name, String Famille)
+        public long CreateSubFamily(string Name, string Famille)
         {
             return CreateSubFamily(Name, CreateFamily(Famille));
         }
@@ -163,6 +166,7 @@ namespace ProjetNET
         /// <returns>The id of the newmy created brand</returns>
         public long CreateBrand(string Name)
         {
+            //Get the existing brand
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefMarque FROM Marques WHERE Nom = @Name", _Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
 
@@ -182,6 +186,7 @@ namespace ProjetNET
                 throw new Exception("Getting M failed");
             }
 
+            //Get the next ID
             long Id = 0;
             SQLiteCommand CommandId = new SQLiteCommand("SELECT MAX(RefMarque) AS ID FROM Marques", _Connection);
             SQLiteDataReader ResultId = CommandId.ExecuteReader();
@@ -200,6 +205,7 @@ namespace ProjetNET
                 throw new Exception("Getting M failed");
             }
 
+            //Insert brand
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Marques (RefMarque, Nom) VALUES (@ID, @Name)", _Connection);
             CommandInsert.Parameters.AddWithValue("@ID", ++Id);
             CommandInsert.Parameters.AddWithValue("@Name", Name);
@@ -216,6 +222,7 @@ namespace ProjetNET
         /// <returns>The id of the newly created family</returns>
         public long CreateFamily(string Name)
         {
+            //Get existign family
             SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefFamille FROM Familles WHERE Nom = @Name", _Connection);
             CommandSelect.Parameters.AddWithValue("@Name", Name);
 
@@ -235,6 +242,7 @@ namespace ProjetNET
                 throw new Exception("Getting F failed");
             }
 
+            //Get next ID
             long Id = 0;
             SQLiteCommand CommandId = new SQLiteCommand("SELECT MAX(RefFamille) AS ID FROM Familles", _Connection);
             SQLiteDataReader ResultId = CommandId.ExecuteReader();
@@ -253,6 +261,7 @@ namespace ProjetNET
                 throw new Exception("Getting F failed");
             }
 
+            //Insert family
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT INTO Familles (RefFamille, Nom) VALUES (@ID, @Name)", _Connection);
             CommandInsert.Parameters.AddWithValue("@ID", ++Id);
             CommandInsert.Parameters.AddWithValue("@Name", Name);
@@ -267,8 +276,8 @@ namespace ProjetNET
         /// </summary>
         public void Clear()
         {
-            String[] Tables = {"Articles", "Familles", "Marques", "SousFamilles"};
-            foreach(String Table in Tables)
+            string[] Tables = {"Articles", "Familles", "Marques", "SousFamilles"};
+            foreach(string Table in Tables)
             {
                 SQLiteCommand CommandClear = new SQLiteCommand("DELETE FROM " + Table, _Connection);
                 CommandClear.ExecuteNonQuery();
@@ -317,7 +326,7 @@ namespace ProjetNET
         public void DeleteBrand(long Ref)
         {
             var Transaction = _Connection.BeginTransaction();
-            {
+            { //Delete articles
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefMarque = @Ref", _Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
                 int Modified = CommandDelete.ExecuteNonQuery();
@@ -327,7 +336,7 @@ namespace ProjetNET
                     return;
                 }
             }
-            {
+            { //Delete brand
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Marques WHERE RefMarque = @Ref", _Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
                 CommandDelete.ExecuteNonQuery();
@@ -342,12 +351,13 @@ namespace ProjetNET
         public void DeleteFamily(long Ref)
         {
             var Transaction = _Connection.BeginTransaction();
-            {
+            { //Delete family
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Familles WHERE RefFamille = @Ref", _Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
                 CommandDelete.ExecuteNonQuery();
             }
 
+            //Get all subfamilies to delete
             LinkedList<long> SfToDel = new LinkedList<long>();
             {
                 SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefSousFamille FROM SousFamilles WHERE RefFamille = @Ref", _Connection);
@@ -375,12 +385,12 @@ namespace ProjetNET
             }
             foreach (long RefSf in SfToDel)
             {
-                {
+                { //Delete sub families
                     SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM SousFamilles WHERE RefSousFamille = @Ref", _Connection);
                     CommandDelete.Parameters.AddWithValue("@Ref", RefSf);
                     CommandDelete.ExecuteNonQuery();
                 }
-                {
+                { //Delete articles
                     SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefSousFamille = @Ref", _Connection);
                     CommandDelete.Parameters.AddWithValue("@Ref", RefSf);
                     CommandDelete.ExecuteNonQuery();
@@ -396,13 +406,13 @@ namespace ProjetNET
         public void DeleteSubFamily(long Ref)
         {
             var Transaction = _Connection.BeginTransaction();
-            {
+            { //Delete sub family
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM SousFamilles WHERE RefSousFamille = @Ref", _Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
                 CommandDelete.ExecuteNonQuery();
             }
 
-            {
+            { //Delete articles
                 SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Articles WHERE RefSousFamille = @Ref", _Connection);
                 CommandDelete.Parameters.AddWithValue("@Ref", Ref);
                 int Modified = CommandDelete.ExecuteNonQuery();
@@ -413,6 +423,7 @@ namespace ProjetNET
                 }
             }
 
+            //Get families to delete
             LinkedList<long> FToDel = new LinkedList<long>();
             {
                 SQLiteCommand CommandSelect = new SQLiteCommand("SELECT RefFamille FROM SousFamilles WHERE RefSousFamille = @Ref", _Connection);
@@ -438,6 +449,7 @@ namespace ProjetNET
                 return;
             }
 
+            //Delete families
             foreach (long RefF in FToDel)
             {
                     SQLiteCommand CommandDelete = new SQLiteCommand("DELETE FROM Familles WHERE RefFamille = @Ref", _Connection);
@@ -473,7 +485,7 @@ namespace ProjetNET
         public void UpdateOrCreateBrand(Brand Brand)
         {
             long Id = -1;
-            if (Brand.Reference == -1)
+            if (Brand.Reference == -1) //If no ID, get the next one
             {
                 SQLiteCommand CommandId = new SQLiteCommand("SELECT MAX(RefMarque) AS ID FROM Marques", _Connection);
                 SQLiteDataReader ResultId = CommandId.ExecuteReader();
@@ -494,6 +506,7 @@ namespace ProjetNET
             else
                 Id = Brand.Reference;
 
+            //Insert brand
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO Marques (RefMarque, Nom) VALUES (@ID, @Name)", _Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Id);
             CommandInsert.Parameters.AddWithValue("@Name", Brand.Name);
@@ -509,7 +522,7 @@ namespace ProjetNET
         public void UpdateOrCreateFamily(Family Family)
         {
             long Id = -1;
-            if (Family.Reference == -1)
+            if (Family.Reference == -1)//If no ID, get the next one
             {
                 SQLiteCommand CommandId = new SQLiteCommand("SELECT MAX(RefFamily) AS ID FROM Familles", _Connection);
                 SQLiteDataReader ResultId = CommandId.ExecuteReader();
@@ -530,6 +543,7 @@ namespace ProjetNET
             else
                 Id = Family.Reference;
 
+            //Insert family
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO Familles (RefFamille, Nom) VALUES (@ID, @Name)", _Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Id);
             CommandInsert.Parameters.AddWithValue("@Name", Family.Name);
@@ -545,7 +559,7 @@ namespace ProjetNET
         public void UpdateOrCreateSubFamily(SubFamily SubFamily)
         {
             long Id = -1;
-            if (SubFamily.Reference == -1)
+            if (SubFamily.Reference == -1)//If no ID, get the next one
             {
                 SQLiteCommand CommandId = new SQLiteCommand("SELECT MAX(RefSousFamille) AS ID FROM SousFamilles", _Connection);
                 SQLiteDataReader ResultId = CommandId.ExecuteReader();
@@ -566,6 +580,7 @@ namespace ProjetNET
             else
                 Id = SubFamily.Reference;
 
+            //Insert sub family
             SQLiteCommand CommandInsert = new SQLiteCommand("INSERT OR REPLACE INTO SousFamilles (RefSousFamille, RefFamille, Nom) VALUES (@ID, @IDFamille, @Name)", _Connection);
             CommandInsert.Parameters.AddWithValue("@ID", Id);
             CommandInsert.Parameters.AddWithValue("@IDFamille", SubFamily.FamilyReference);
