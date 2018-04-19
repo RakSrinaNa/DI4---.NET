@@ -49,6 +49,7 @@ namespace ProjetNET
         /// <param name="Article">The article (or null for empty window)</param>
         private void Construct(Article Article)
         {
+            //Do not allow resizing
             StartPosition = FormStartPosition.CenterParent;
             DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;

@@ -36,6 +36,7 @@ namespace ProjetNET
         /// <param name="Brand">The brand (or null for empty window)</param>
         private void Construct(Brand Brand)
         {
+            //Do not allow resizing
             StartPosition = FormStartPosition.CenterParent;
             DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;

@@ -36,6 +36,7 @@ namespace ProjetNET
         /// <param name="Family">The family (or null for empty window)</param>
         private void Construct(Family Family)
         {
+            //Do not allow resizing
             StartPosition = FormStartPosition.CenterParent;
             DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;

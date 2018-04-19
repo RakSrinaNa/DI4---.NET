@@ -48,6 +48,7 @@ namespace ProjetNET
         /// <param name="SubFamily">The subfamily (or null for empty window)</param>
         private void Construct(SubFamily SubFamily)
         {
+            //Do not allow resizing
             StartPosition = FormStartPosition.CenterParent;
             DialogResult = DialogResult.Cancel;
             FormBorderStyle = FormBorderStyle.FixedSingle;

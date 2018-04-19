@@ -49,6 +49,7 @@ namespace ProjetNET
 
                 if (listView1.SelectedItems.Count == 1)
                 {
+                    //Created context menu
                     ListViewItem Item = listView1.SelectedItems[0];
                     MenuItem MenuAdd = new MenuItem("Add family");
                     MenuAdd.Click += (Sender2, Event2) =>
@@ -126,7 +127,7 @@ namespace ProjetNET
         private void OnColumnClick(object Sender, ColumnClickEventArgs Event)
         {
             ListViewItemComparer LastComparer = (ListViewItemComparer) listView1.ListViewItemSorter;
-            if (LastComparer.GetCol() == Event.Column)
+            if (LastComparer.GetCol() == Event.Column) //If teh column is the one already being sorted.
             {
                 LastComparer.Invert();
                 listView1.Sort();
@@ -193,7 +194,7 @@ namespace ProjetNET
             {
                 switch (_Col)
                 {
-                    case 0:
+                    case 0: //If the ID column
                         return (_Inverted ? -1 : 1) *
                                (int) (long.Parse(((ListViewItem) X).SubItems[_Col].Text,
                                           System.Globalization.CultureInfo.CurrentUICulture) -

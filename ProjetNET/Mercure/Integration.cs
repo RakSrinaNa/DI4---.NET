@@ -17,6 +17,7 @@ namespace ProjetNET
         public Integration()
         {
             InitializeComponent();
+            //Do not allow resizing
             StartPosition = FormStartPosition.CenterParent;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
